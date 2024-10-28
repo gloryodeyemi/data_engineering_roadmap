@@ -21,3 +21,24 @@ WHERE amount NOT IN (0.99, 1.98, 1.99);
 
 SELECT * FROM customer
 WHERE first_name IN ('John', 'Jake', 'Julie');
+
+-- LIKE and ILIKE
+SELECT * FROM customer
+WHERE first_name LIKE 'J%' AND last_name LIKE 'S%';
+
+SELECT * FROM customer
+WHERE first_name LIKE 'J%' AND last_name ILIKE 's%';
+-- ILIKE is case insensitive, but LIKE ia case sensitive.
+
+SELECT * FROM customer
+WHERE first_name LIKE '%her%';
+
+SELECT * FROM customer
+WHERE first_name LIKE '_her%'; -- only one character allowed before her.
+
+SELECT * FROM customer
+WHERE first_name NOT LIKE '_her%';
+
+SELECT * FROM customer
+WHERE first_name LIKE 'A%' AND last_name NOT LIKE 'B%'
+ORDER BY last_name;
