@@ -1,6 +1,8 @@
 -- Day 3 of SQL Advent Calendar
 -- Today's Question:
--- You’re trying to identify the most calorie-packed candies to avoid during your holiday binge. Write a query to rank candies based on their calorie count within each category. Include the candy name, category, calories, and rank (rank_in_category) within the category.
+-- You’re trying to identify the most calorie-packed candies to avoid during your holiday binge. Write a query to rank candies 
+-- based on their calorie count within each category. Include the candy name, category, calories, and rank (rank_in_category) 
+-- within the category.
 
 -- Table name: candy_nutrition
 -- candy_id     candy_name	    calories	candy_category
