@@ -49,3 +49,16 @@ SELECT film.film_id, title, inventory_id, store_id
 FROM film
 LEFT JOIN inventory
 ON inventory.film_id = film.film_id;
+
+SELECT film.film_id, title, inventory_id, store_id
+FROM film
+LEFT JOIN inventory
+ON inventory.film_id = film.film_id
+WHERE inventory.film_id IS NULL;
+
+-- RIGHT OUTER JOIN
+-- opposite of LEFT OUTER JOIN.
+
+-- UNION
+-- COMBINE result set of two or more SELECT statements
+-- concatenate two results together.
