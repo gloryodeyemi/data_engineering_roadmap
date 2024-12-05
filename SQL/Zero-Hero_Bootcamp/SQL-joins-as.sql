@@ -39,3 +39,13 @@ OR payment.customer_id IS NULL;
 -- confirmation
 SELECT COUNT(DISTINCT customer_id) FROM payment;
 SELECT COUNT(DISTINCT customer_id) FROM customer;
+
+-- LEFT OUTER JOIN
+-- grabs data exclusive to the left table or present in both table
+-- the table order matters.
+-- WHERE can be used to filter values only unique to the left table, i.e., values in
+-- left table but not in right table.
+SELECT film.film_id, title, inventory_id, store_id
+FROM film
+LEFT JOIN inventory
+ON inventory.film_id = film.film_id;
