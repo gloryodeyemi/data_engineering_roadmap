@@ -24,3 +24,18 @@ ON payment.customer_id = customer.customer_id;
 -- FULL OUTER JOIN, LEFT OUTER JOIN, and RIGHT OUTER JOIN
 
 -- FULL OUTER JOIN
+-- it grabs everything
+SELECT * FROM customer
+FULL OUTER JOIN payment
+ON customer.customer_id = payment.customer_id;
+
+-- WHERE statement filter
+SELECT * FROM customer
+FULL OUTER JOIN payment
+ON customer.customer_id = payment.customer_id
+WHERE customer.customer_id IS NULL
+OR payment.customer_id IS NULL;
+
+-- confirmation
+SELECT COUNT(DISTINCT customer_id) FROM payment;
+SELECT COUNT(DISTINCT customer_id) FROM customer;
