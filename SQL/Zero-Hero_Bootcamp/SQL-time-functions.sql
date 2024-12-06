@@ -60,6 +60,6 @@ SELECT DISTINCT TO_CHAR(payment_date, 'MONTH') AS payment_months
 FROM payment;
 
 -- 2. How many payments occurred on a Monday?
-SELECT COUNT(EXTRACT(DOW FROM payment_date)) AS monday_payments
+SELECT COUNT(*) AS monday_payments
 FROM payment
 WHERE EXTRACT(DOW FROM payment_date) = 1;
