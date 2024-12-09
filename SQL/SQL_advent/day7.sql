@@ -1,7 +1,9 @@
 -- Day 7 of SQL Advent Calendar
 
 -- Today's Question:
--- The owner of a winter market wants to know which vendors have generated the highest revenue overall. For each vendor, calculate the total revenue for all their items and return a list of the top 2 vendors by total revenue. Include the vendor_name and total_revenue in your results.
+-- The owner of a winter market wants to know which vendors have generated the highest revenue overall. For each vendor, 
+-- calculate the total revenue for all their items and return a list of the top 2 vendors by total revenue. Include the 
+-- vendor_name and total_revenue in your results.
 
 -- Table name: vendors
 -- vendor_id	vendor_name	market_location
