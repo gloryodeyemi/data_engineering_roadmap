@@ -11,3 +11,8 @@
 -- 4	Board Game	John	0.9
 
 -- Solution
+SELECT 
+    recipient, 
+    SUM(weight_kg) AS total_weight_kg
+FROM gifts
+GROUP BY recipient;
