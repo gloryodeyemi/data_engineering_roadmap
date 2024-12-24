@@ -25,3 +25,9 @@ ON a.day_of_month = b.day_of_month + 1
 ORDER BY a.day_of_month;
 
 -- Solution 2 - using window function
+SELECT
+    day_of_month,
+    weight AS current_weight,
+    LAG(weight) OVER (ORDER BY day_of_month) AS previous_weight,
+    weight - LAG(weight) OVER (ORDER BY day_of_month) AS weight_change
+FROM grinch_weight_log;
