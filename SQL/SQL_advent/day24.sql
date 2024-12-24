@@ -19,3 +19,14 @@ SELECT
     gifts_delivered,
     SUM(gifts_delivered) OVER (ORDER BY delivery_date) AS running_total
 FROM deliveries;
+
+-- Solution 2 - self join
+SELECT 
+    d1.delivery_date,
+    d1.gifts_delivered,
+    SUM(d2.gifts_delivered) AS running_total
+FROM deliveries d1
+JOIN deliveries d2
+ON d1.delivery_date >= d2.delivery_date
+GROUP BY d1.delivery_date, d1.gifts_delivered
+ORDER BY d1.delivery_date;
