@@ -90,9 +90,11 @@ WHERE DATE(starttime) = '2012-09-21'
 AND name LIKE '%Tennis Court%'
 ORDER BY starttime;
 
-
-
-
-
-
-
+-- 14. How can you produce a list of the start times for bookings by members named 'David Farrell'?
+-- Expected result is 34 rows of timestamps
+SELECT starttime
+FROM cd.bookings b
+LEFT JOIN cd.members m
+ON b.memid = m.memid
+WHERE surname = 'Farrell'
+AND firstname = 'David';
