@@ -33,3 +33,31 @@ WHERE name LIKE '%Tennis%';
 SELECT * FROM cd.facilities
 WHERE facid IN (1,5);
 
+-- 7. How can you produce a list of members who joined after the start of September 2012? Return the memid, surname, 
+-- firstname, and joindate of the members in question.
+-- Expected Result is 10 rows
+SELECT memid, surname, firstname, joindate
+FROM cd.members
+WHERE EXTRACT(YEAR FROM joindate) >= 2012
+AND EXTRACT(MONTH FROM joindate) >= 9;
+
+-- 8. How can you produce an ordered list of the first 10 surnames in the members table? The list must not contain 
+-- duplicates.
+-- Expected Result should be 10 rows if you include GUEST as a last name
+SELECT DISTINCT surname
+FROM cd.members
+ORDER BY surname
+LIMIT 10;
+
+-- 9. You'd like to get the signup date of your last member. How can you retrieve this information?
+-- Expected Result
+-- 2012-09-26 18:08:45
+SELECT MAX(joindate) AS last_member_joindate
+FROM cd.members;
+
+
+
+
+
+
+
