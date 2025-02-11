@@ -55,6 +55,13 @@ LIMIT 10;
 SELECT MAX(joindate) AS last_member_joindate
 FROM cd.members;
 
+-- 10. Produce a count of the number of facilities that have a cost to guests of 10 or more.
+-- Expected Result: 6
+SELECT COUNT(*) 
+FROM cd.facilities
+WHERE guestcost > 10;
+
+
 
 
 
