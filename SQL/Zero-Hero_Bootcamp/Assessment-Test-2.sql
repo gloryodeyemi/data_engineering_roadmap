@@ -61,6 +61,15 @@ SELECT COUNT(*)
 FROM cd.facilities
 WHERE guestcost > 10;
 
+-- 11. Produce a list of the total number of slots booked per facility in the month of September 2012. 
+-- Produce an output table consisting of facility id and slots, sorted by the number of slots.
+-- Expected Result is 9 rows
+SELECT facid, SUM(slots) AS total_slots
+FROM cd.bookings
+WHERE EXTRACT(YEAR FROM starttime) = 2012
+AND EXTRACT(MONTH FROM starttime) = 9
+GROUP BY facid;
+
 
 
 
