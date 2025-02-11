@@ -70,6 +70,25 @@ WHERE EXTRACT(YEAR FROM starttime) = 2012
 AND EXTRACT(MONTH FROM starttime) = 9
 GROUP BY facid;
 
+-- 12. Produce a list of facilities with more than 1000 slots booked. Produce an output table consisting of facility id 
+-- and total slots, sorted by facility id.
+-- Expected Result is 5 rows
+SELECT facid, SUM(slots) AS total_slots
+FROM cd.bookings
+GROUP BY facid
+HAVING SUM(slots) > 1000
+ORDER BY facid;
+
+-- 13. How can you produce a list of the start times for bookings for tennis courts, for the date '2012-09-21'? 
+-- Return a list of start time and facility name pairings, ordered by the time.
+-- Expected Result is 12 rows
+SELECT starttime, name
+FROM cd.bookings b
+LEFT JOIN cd.facilities f
+ON b.facid = f.facid
+WHERE DATE(starttime) = '2012-09-21'
+AND name LIKE '%Tennis Court%'
+ORDER BY starttime;
 
 
 
