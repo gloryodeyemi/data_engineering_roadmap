@@ -18,3 +18,8 @@
 15. MATHEMATICAL FUNCTIONS AND OPERATORS
 16. SUBQUERY & EXISTS
 17. SELF-JOIN
+18. Creating Databases and Tables
+    * Data types
+    * Primary and Foreign keys
+    * Constraints
+    * CREATE, INSERT, UPDATE, DELETE, ALTER, DROP, and CHECK
