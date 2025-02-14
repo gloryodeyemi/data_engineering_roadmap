@@ -15,7 +15,7 @@ WHERE account_job.user_id = account.user_id;
 
 SELECT * FROM account_job;
 
--- returning command
+-- returning command - return affected rows.
 UPDATE account
 SET last_login = CURRENT_TIMESTAMP
 RETURNING email, created_on, last_login;
