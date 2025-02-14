@@ -1,3 +1,4 @@
+--  DROP column
 SELECT * FROM new_info;
 
 ALTER TABLE new_info
