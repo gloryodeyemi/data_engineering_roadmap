@@ -1,4 +1,4 @@
--- Assignment Test 3
+-- Assessment Test 3
 
 -- Create a new database called "School" this database should have two tables: teachers and students.
 -- The students table should have columns for student_id, first_name,last_name, homeroom_number, phone,email, and graduation year.
