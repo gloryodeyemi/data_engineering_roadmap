@@ -28,3 +28,4 @@
 21. CAST
 22. NULLIF
 23. VIEWS
+24. Import and Export files
