@@ -1,0 +1,4 @@
+-- VIEW
+-- a database object that is of a stored query.
+-- it can be accessed as a virtual table in PostgreSQL.
+-- you can update and alter existing views.
