@@ -8,6 +8,9 @@ FROM film;
 
 -- CAST
 -- convert one data type into another
--- SELECT CAST('5' AS INTEGER)
--- SELECT '5'::INTEGER - Postgres
+SELECT CAST('5' AS INTEGER);
+SELECT '5'::INTEGER; -- Postgres
 -- SELECT CAST(date AS TIMESTAMP) FROM TABLE
+
+SELECT CHAR_LENGTH(CAST(inventory_id AS VARCHAR))
+FROM rental;
