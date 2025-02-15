@@ -21,5 +21,7 @@ CREATE OR REPLACE VIEW customer_info AS
 -- change VIEW name
 ALTER VIEW customer_info RENAME TO c_info;
 
+SELECT * FROM c_info;
+
 -- remove VIEW
 DROP VIEW IF EXISTS c_info;
