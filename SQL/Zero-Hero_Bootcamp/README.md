@@ -23,3 +23,5 @@
     * Primary and Foreign keys
     * Constraints
     * CREATE, INSERT, UPDATE, DELETE, ALTER, DROP, and CHECK
+19. CASE
+20. COALESCE
