@@ -42,5 +42,7 @@ import pandas as pd
 
 def changeDatatype(students: pd.DataFrame) -> pd.DataFrame:
     students['grade'] = [int(students['grade'][index]) for index in range(len(students['grade']))]
+    # students = students.astype({'grade': int})
+    # students['grade']=students['grade'].astype('int')
     return students
     
