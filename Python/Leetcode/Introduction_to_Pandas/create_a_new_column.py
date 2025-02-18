@@ -49,5 +49,6 @@ A new column bonus is created by doubling the value in the column salary.
 import pandas as pd
 
 def createBonusColumn(employees: pd.DataFrame) -> pd.DataFrame:
-    employees['bonus'] = [employees['salary'][index] * 2 for index in range(len(employees['salary'].tolist()))]
+    # employees['bonus'] = [employees['salary'][index] * 2 for index in range(len(employees['salary'].tolist()))]
+    employees['bonus'] = employees['salary'] * 2
     return employees
