@@ -35,3 +35,11 @@ WHERE release_year = 1994;
 SELECT MAX(gross) AS highest_gross
 FROM films
 WHERE release_year BETWEEN 2000 AND 2012;
+
+-- Calculate the average facebook_likes to one decimal place and assign to the alias, avg_facebook_likes.
+SELECT ROUND(AVG(facebook_likes), 1) AS avg_facebook_likes
+FROM reviews;
+
+-- Calculate the average budget from the films table, aliased as avg_budget_thousands, and round to the nearest thousand.
+SELECT ROUND(AVG(budget), -3) AS avg_budget_thousands
+FROM films;
