@@ -33,3 +33,22 @@ WHERE certification IN ('NC-17', 'R')
     AND language IN ('English', 'Italian', 'Greek');
 
 -- Combining filtering and selecting
+-- Count the unique titles from the films database and use the alias provided.
+-- Filter to include only movies with a release_year from 1990 to 1999, inclusive.
+-- Add another filter narrowing your query down to English-language films.
+-- Add a final filter to select only films with 'G', 'PG', 'PG-13' certifications.
+SELECT COUNT(DISTINCT title)  AS nineties_english_films_for_teens
+FROM films
+WHERE release_year BETWEEN 1990 AND 1999
+	AND language = 'English'
+	AND certification IN ('G', 'PG', 'PG-13');
+
+-- NULL & IS NOT NULL
+-- Select the title of every film that doesn't have a budget associated with it and use the alias no_budget_info.
+SELECT title AS no_budget_info
+FROM films
+WHERE budget IS NULL;
+
+-- Count the number of films with a language associated with them and use the alias count_language_known.
+SELECT COUNT(language) AS count_language_known
+FROM films;
