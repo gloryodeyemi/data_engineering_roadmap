@@ -158,3 +158,20 @@ USING(code)
 FULL JOIN currencies as c2 
 USING(code)
 WHERE region LIKE 'M%esia';
+
+-- CROSS JOIN
+-- Complete the code to perform an INNER JOIN of countries AS c with languages AS l using the code field to obtain the languages currently spoken in the two countries.
+SELECT c.name AS country, l.name AS language
+FROM countries as c
+INNER JOIN languages as l
+USING(code)
+WHERE c.code IN ('PAK','IND')
+	AND l.code in ('PAK','IND');
+
+-- Change your INNER JOIN to a different kind of join to look at possible combinations of languages that could have been spoken in the two countries given their history.
+-- Observe the differences in output for both joins.
+SELECT c.name AS country, l.name AS language
+FROM countries AS c        
+CROSS JOIN languages as l
+WHERE c.code in ('PAK','IND')
+	AND l.code in ('PAK','IND');
