@@ -21,3 +21,9 @@ SELECT c.code AS country_code, name, year, inflation_rate
 FROM countries AS c
 INNER JOIN economies AS e
 ON c.code = e.code;
+
+-- Use the country code field to complete the INNER JOIN with USING; do not change any alias names.
+SELECT c.name AS country, l.name AS language, official
+FROM countries AS c
+INNER JOIN languages AS l
+USING(code);
