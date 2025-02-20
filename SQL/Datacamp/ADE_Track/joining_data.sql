@@ -37,3 +37,19 @@ FROM countries AS c
 INNER JOIN languages as l
 USING(code)
 WHERE l.name = 'Bhojpuri';
+
+-- Do an inner join of countries AS c (left) with populations AS p (right), on code.
+-- Select name and fertility_rate.
+SELECT name, fertility_rate
+FROM countries AS c
+INNER JOIN populations AS p
+ON c.code = p.country_code;
+
+-- Chain an inner join with the economies table AS e, on code.
+-- Select year and unemployment_rate from the economies table.
+SELECT name, e.year, fertility_rate, unemployment_rate
+FROM countries AS c
+INNER JOIN populations AS p
+ON c.code = p.country_code
+INNER JOIN economies AS e
+USING(code);
