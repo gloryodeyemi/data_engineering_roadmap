@@ -27,3 +27,13 @@ SELECT c.name AS country, l.name AS language, official
 FROM countries AS c
 INNER JOIN languages AS l
 USING(code);
+
+-- Select the country name, aliased as country, from the countries table.
+-- Now add an alias c for the countries table and perform an inner join with the languages table, l, on the right; join on code in line 8 with the USING keyword; 
+-- include the language name, aliased as language.
+-- Add a WHERE clause to find how many countries speak the language 'Bhojpuri'.
+SELECT c.name AS country, l.name AS language
+FROM countries AS c
+INNER JOIN languages as l
+USING(code)
+WHERE l.name = 'Bhojpuri';
