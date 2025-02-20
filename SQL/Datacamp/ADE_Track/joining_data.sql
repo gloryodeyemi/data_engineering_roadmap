@@ -53,3 +53,5 @@ INNER JOIN populations AS p
 ON c.code = p.country_code
 INNER JOIN economies AS e
 USING(code);
+-- Modify your query so that you are joining to economies on year as well as code.
+    AND p.year = e.year;
