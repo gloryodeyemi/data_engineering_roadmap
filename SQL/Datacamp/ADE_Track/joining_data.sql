@@ -175,3 +175,18 @@ FROM countries AS c
 CROSS JOIN languages as l
 WHERE c.code in ('PAK','IND')
 	AND l.code in ('PAK','IND');
+
+-- Complete the join of countries AS c with populations as p.
+-- Filter on the year 2010.
+-- Sort your results by life expectancy in ascending order.
+-- Limit the result to five countries.
+SELECT 
+	c.name AS country,
+    region,
+    life_expectancy AS life_exp
+FROM countries AS c
+INNER JOIN populations as p 
+ON c.code = p.country_code
+WHERE year = 2010
+ORDER BY life_exp
+LIMIT 5;
