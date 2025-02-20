@@ -1,5 +1,6 @@
 -- Sorting and Grouping
 
+-- ORDER BY
 -- Select the name of each person in the people table, sorted alphabetically.
 SELECT name
 FROM people
@@ -20,6 +21,7 @@ SELECT certification, release_year, title
 FROM films
 ORDER BY certification, release_year DESC;
 
+-- GROUP BY
 -- Select the release_year and count of films released in each year aliased as film_count.
 SELECT release_year, COUNT(*) AS film_count
 FROM films
@@ -41,3 +43,5 @@ SELECT release_year, COUNT(DISTINCT language) AS language_diversity
 FROM films
 GROUP BY release_year
 ORDER BY language_diversity DESC;
+
+-- HAVING
