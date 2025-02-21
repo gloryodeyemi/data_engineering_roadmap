@@ -107,3 +107,24 @@ WHERE year = 2015
     WHERE gov_form LIKE '%Republic%'
         OR gov_form LIKE '%Monarchy%')
 ORDER BY inflation_rate;
+
+-- From cities, select the city name, country code, proper population, and metro area population, as well as the field city_perc, which calculates the proper population as a percentage of metro area population for each city (using the formula provided).
+-- Filter city name with a subquery that selects capital cities from countries in 'Europe' or continents with 'America' at the end of their name.
+-- Exclude NULL values in metroarea_pop.
+-- Order by city_perc (descending) and return only the first 10 rows.
+SELECT 
+    name, 
+    country_code, 
+    city_proper_pop, 
+    metroarea_pop,
+    city_proper_pop/metroarea_pop * 100 AS city_perc
+FROM cities
+WHERE name IN (
+    SELECT capital
+    FROM countries
+        WHERE continent = 'Europe'
+            OR continent LIKE '%America'
+    )
+    AND metroarea_pop IS NOT NULL
+ORDER BY city_perc DESC
+LIMIT 10;
