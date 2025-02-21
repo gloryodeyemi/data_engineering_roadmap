@@ -47,3 +47,34 @@ WHERE year = 2015
   (SELECT AVG(life_expectancy)
    FROM populations
    WHERE year = 2015);
+
+-- Return the name, country_code and urbanarea_pop for all capital cities (not aliased).
+-- Select relevant fields from cities table
+SELECT name, country_code, urbanarea_pop
+FROM cities
+WHERE name IN
+    (SELECT capital
+    FROM countries)
+ORDER BY urbanarea_pop DESC;
+
+-- Write a LEFT JOIN with countries on the left and the cities on the right, joining on country code.
+-- In the SELECT statement of your join, include country names as country, and count the cities in each country, aliased as cities_num.
+-- Sort by cities_num (descending), and country (ascending), limiting to the first nine records.
+-- Find top nine countries with the most cities
+SELECT countries.name AS country, COUNT(cities.name) AS cities_num
+FROM countries
+LEFT JOIN cities
+    ON countries.code = cities.country_code
+GROUP BY countries.name
+ORDER BY cities_num DESC
+LIMIT 9;
+
+-- Complete the subquery to return a result equivalent to your LEFT JOIN, counting all cities in the cities table as cities_num.
+-- Use the WHERE clause to enable the correct country codes to be matched in the cities and countries columns
+SELECT countries.name AS country,
+  (SELECT COUNT(name)
+   FROM cities
+   WHERE cities.country_code = countries.code) AS cities_num
+FROM countries
+ORDER BY cities_num DESC, country
+LIMIT 9;
