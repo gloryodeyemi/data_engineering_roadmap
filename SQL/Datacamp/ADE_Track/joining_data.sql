@@ -190,3 +190,14 @@ ON c.code = p.country_code
 WHERE year = 2010
 ORDER BY life_exp
 LIMIT 5;
+
+-- SELF JOIN
+-- Perform an inner join of populations with itself ON country_code, aliased p1 and p2 respectively.
+-- Select the country_code from p1 and the size field from both p1 and p2, aliasing p1.size as size2010 and p2.size as size2015 (in that order).
+SELECT p1.country_code, p1.size AS size2010, p2.size AS size2015
+FROM populations as p1
+INNER JOIN populations as p2
+USING(country_code);
+-- Since you want to compare records from 2010 and 2015, eliminate unwanted records by extending the WHERE statement to include only records where the p1.year matches p2.year - 5.
+WHERE p1.year = 2010
+    AND p1.year = p2.year - 5;
