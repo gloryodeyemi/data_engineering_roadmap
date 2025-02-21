@@ -78,3 +78,20 @@ SELECT countries.name AS country,
 FROM countries
 ORDER BY cities_num DESC, country
 LIMIT 9;
+
+-- Subquery inside FROM
+-- Begin with a query that groups by each country code from languages, and counts the languages spoken in each country as lang_num.
+-- In your SELECT statement, return code and lang_num (in that order).
+SELECT code, COUNT(name) AS lang_num
+FROM languages
+GROUP BY code;
+
+-- Select local_name from countries, with the aliased lang_num from your subquery (which has been nested and aliased for you as sub).
+-- Use WHERE to match the code field from countries and sub.
+SELECT local_name, lang_num
+FROM countries,
+  (SELECT code, COUNT(*) AS lang_num
+  FROM languages
+  GROUP BY code) AS sub
+WHERE countries.code = sub.code
+ORDER BY lang_num DESC;
