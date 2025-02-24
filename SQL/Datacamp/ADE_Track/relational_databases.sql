@@ -174,3 +174,29 @@ FROM professors
 JOIN universities
 ON professors.university_id = universities.id
 WHERE universities.university_city = 'Zurich';
+
+-- Add a professor_id column with integer data type to affiliations, and declare it to be a foreign key that references the id column in professors.
+ALTER TABLE affiliations
+ADD COLUMN professor_id INTEGER REFERENCES professors (id);
+
+-- Rename the organization column in affiliations to organization_id.
+ALTER TABLE affiliations
+RENAME COLUMN organization TO organization_id;
+
+-- Add a foreign key constraint on organization_id so that it references the id column in organizations.
+ALTER TABLE affiliations
+ADD CONSTRAINT affiliations_organization_fkey FOREIGN KEY (organization_id) REFERENCES organizations (id);
+
+-- Update the professor_id column with the corresponding value of the id column in professors.
+-- "Corresponding" means rows in professors where the firstname and lastname are identical to the ones in affiliations.
+UPDATE affiliations
+SET professor_id = professors.id
+FROM professors
+WHERE affiliations.firstname = professors.firstname AND affiliations.lastname = professors.lastname;
+
+-- Drop the firstname and lastname columns from the affiliations table.
+ALTER TABLE affiliations
+DROP COLUMN firstname;
+
+ALTER TABLE affiliations
+DROP COLUMN lastname;
