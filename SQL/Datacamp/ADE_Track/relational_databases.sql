@@ -24,3 +24,28 @@ CREATE TABLE universities (
 -- Alter professors to add the text column university_shortname.
 ALTER TABLE professors
 ADD COLUMN university_shortname text;
+
+-- Rename the organisation column to organization in affiliations.
+ALTER TABLE affiliations
+RENAME COLUMN organisation TO organization;
+
+-- Delete the university_shortname column in affiliations.
+ALTER TABLE affiliations
+DROP COLUMN university_shortname;
+
+-- Insert all DISTINCT professors from university_professors into professors.
+-- Print all the rows in professors.
+INSERT INTO professors 
+SELECT DISTINCT firstname, lastname, university_shortname 
+FROM university_professors;
+
+SELECT * 
+FROM professors;
+
+-- Insert all DISTINCT affiliations into affiliations from university_professors.
+INSERT INTO affiliations 
+SELECT DISTINCT firstname, lastname, function, organization 
+FROM university_professors;
+
+-- Delete the university_professors table.
+DROP TABLE university_professors;
