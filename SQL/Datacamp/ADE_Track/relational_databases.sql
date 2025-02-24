@@ -70,3 +70,19 @@ ALTER TABLE professors
 ALTER COLUMN firstname 
 TYPE varchar(16)
 USING SUBSTRING(firstname FROM 1 FOR 16);
+
+-- Add a not-null constraint for the firstname column.
+ALTER TABLE professors 
+ALTER COLUMN firstname SET NOT NULL;
+
+-- Add a not-null constraint for the lastname column.
+ALTER TABLE professors 
+ALTER COLUMN lastname SET NOT NULL;
+
+-- Add a unique constraint to the university_shortname column in universities. Give it the name university_shortname_unq.
+ALTER TABLE universities
+ADD CONSTRAINT university_shortname_unq UNIQUE(university_shortname);
+
+-- Add a unique constraint to the organization column in organizations. Give it the name organization_unq.
+ALTER TABLE organizations
+ADD CONSTRAINT organization_unq UNIQUE(organization);
