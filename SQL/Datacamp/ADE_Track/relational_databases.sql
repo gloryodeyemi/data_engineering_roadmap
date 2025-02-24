@@ -156,3 +156,21 @@ CREATE TABLE students (
   ssn INTEGER PRIMARY KEY,
   phone_no CHAR(12)
 );
+
+-- Rename the university_shortname column to university_id in professors.
+ALTER TABLE professors
+RENAME COLUMN university_shortname TO university_id;
+
+-- Add a foreign key on university_id column in professors that references the id column in universities.
+-- Name this foreign key professors_fkey.
+ALTER TABLE professors 
+ADD CONSTRAINT professors_fkey FOREIGN KEY (university_id) REFERENCES universities (id);
+
+-- JOIN professors with universities on professors.university_id = universities.id, i.e., retain all records where the foreign key of professors is equal to the 
+-- primary key of universities.
+-- Filter for university_city = 'Zurich'.
+SELECT professors.lastname, universities.id, universities.university_city
+FROM professors
+JOIN universities
+ON professors.university_id = universities.id
+WHERE universities.university_city = 'Zurich';
