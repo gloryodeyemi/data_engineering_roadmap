@@ -49,3 +49,24 @@ FROM university_professors;
 
 -- Delete the university_professors table.
 DROP TABLE university_professors;
+
+-- Execute the given sample code.
+-- As it doesn't work, add an integer type cast at the right place and execute it again.
+SELECT transaction_date, amount + CAST(fee AS INTEGER) AS net_amount 
+FROM transactions;
+
+-- Specify a fixed-length character type with the correct length for university_shortname.
+ALTER TABLE professors
+ALTER COLUMN university_shortname
+TYPE char(3);
+
+-- Change the type of the firstname column to varchar(64).
+ALTER TABLE professors
+ALTER COLUMN firstname
+TYPE VARCHAR(64);
+
+-- Use SUBSTRING() to reduce firstname to 16 characters so its type can be altered to varchar(16).
+ALTER TABLE professors 
+ALTER COLUMN firstname 
+TYPE varchar(16)
+USING SUBSTRING(firstname FROM 1 FOR 16);
