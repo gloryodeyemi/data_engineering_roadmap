@@ -172,3 +172,19 @@ WHERE score > 9;
 SELECT COUNT(*) FROM high_scores
 INNER JOIN labels ON high_scores.reviewid = labels.reviewid
 WHERE label = 'self-released';
+
+-- Create a view called top_artists_2017 with artist from artist_title.
+-- To only return the highest scoring artists of 2017, join the views top_15_2017 and artist_title on reviewid.
+-- Output top_artists_2017.
+CREATE VIEW top_artists_2017 AS
+SELECT artist_title.artist FROM artist_title
+INNER JOIN top_15_2017
+ON artist_title.reviewid = top_15_2017.reviewid;
+
+SELECT * FROM top_artists_2017;
+
+-- Revoke all database users' update and insert privileges on the long_reviews view.
+REVOKE UPDATE, INSERT ON long_reviews FROM PUBLIC; 
+
+-- Grant the editor user update and insert privileges on the long_reviews view.
+GRANT UPDATE, INSERT ON long_reviews TO editor; 
