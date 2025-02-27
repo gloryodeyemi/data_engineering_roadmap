@@ -229,3 +229,42 @@ GRANT data_scientist TO Marta;
 
 -- Remove Marta's user role from the data scientist group role.
 REVOKE data_scientist FROM Marta;
+
+-- Create a new table film_descriptions containing 2 fields: film_id, which is of type INT, and long_description, which is of type TEXT.
+CREATE TABLE film_descriptions (
+    film_id INT,
+    long_description TEXT
+);
+
+-- Occupy the new table with values from the film table.
+INSERT INTO film_descriptions
+SELECT film_id, long_description FROM film;
+
+-- Drop the field long_description from the film table.
+-- Join the two resulting tables to view the original table.
+ALTER TABLE film DROP COLUMN long_description;
+
+SELECT * FROM film 
+JOIN film_descriptions USING(film_id);
+
+-- Create the table film_partitioned, partitioned on the field release_year.
+CREATE TABLE film_partitioned (
+  film_id INT,
+  title TEXT NOT NULL,
+  release_year TEXT
+)
+PARTITION BY LIST (release_year);
+
+-- Create three partitions: one for each release year: 2017, 2018, and 2019. Call the partition for 2019 film_2019, etc.
+CREATE TABLE film_2019
+	PARTITION OF film_partitioned FOR VALUES IN ('2019');
+    
+CREATE TABLE film_2018
+	PARTITION OF film_partitioned FOR VALUES IN ('2018');
+    
+CREATE TABLE film_2017
+	PARTITION OF film_partitioned FOR VALUES IN ('2017');
+
+-- Occupy the new table, film_partitioned, with the three fields required from the film table.
+INSERT INTO film_partitioned
+SELECT film_id, title, release_year FROM film;
