@@ -157,3 +157,18 @@ CREATE TABLE car_model(
 ALTER TABLE rental_cars
 DROP COLUMN model, 
 DROP COLUMN manufacturer;
+
+-- Query the information schema to get views.
+-- Exclude system views in the results.
+SELECT * FROM information_schema.views
+WHERE table_schema NOT IN ('pg_catalog', 'information_schema');
+
+-- Create a view called high_scores that holds reviews with scores above a 9.
+CREATE VIEW high_scores AS
+SELECT * FROM reviews
+WHERE score > 9;
+
+-- Count the number of records in high_scores that are self-released in the label field of the labels table.
+SELECT COUNT(*) FROM high_scores
+INNER JOIN labels ON high_scores.reviewid = labels.reviewid
+WHERE label = 'self-released';
