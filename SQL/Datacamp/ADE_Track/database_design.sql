@@ -188,3 +188,44 @@ REVOKE UPDATE, INSERT ON long_reviews FROM PUBLIC;
 
 -- Grant the editor user update and insert privileges on the long_reviews view.
 GRANT UPDATE, INSERT ON long_reviews TO editor; 
+
+-- Use CREATE OR REPLACE to redefine the artist_title view.
+-- Respecting artist_title's original columns of reviewid, title, and artist, add a label column from the labels table.
+-- Join the labels table using the reviewid field.
+CREATE OR REPLACE VIEW artist_title AS
+SELECT reviews.reviewid, reviews.title, artists.artist, labels.label
+FROM reviews
+INNER JOIN artists
+ON artists.reviewid = reviews.reviewid
+INNER JOIN labels
+ON labels.reviewid = reviews.reviewid;
+
+-- Create a materialized view called genre_count that holds the number of reviews for each genre.
+-- Refresh genre_count so that the view is up-to-date.
+CREATE MATERIALIZED VIEW genre_count AS
+SELECT genre, COUNT(*) 
+FROM genres
+GROUP BY genre;
+
+REFRESH MATERIALIZED VIEW genre_count;
+
+-- Create a role called data_scientist.
+CREATE ROLE data_scientist;
+
+-- Create a role called marta that has one attribute: the ability to login (LOGIN).
+CREATE ROLE Marta WITH LOGIN;
+
+-- Create a role called admin with the ability to create databases (CREATEDB) and to create roles (CREATEROLE).
+CREATE ROLE admin WITH CREATEDB CREATEROLE;
+
+-- Grant the data_scientist role update and insert privileges on the long_reviews view.
+GRANT UPDATE, INSERT ON long_reviews TO data_scientist;
+
+-- Alter Marta's role to give her the provided password.
+ALTER ROLE marta WITH PASSWORD 's3cur3p@ssw0rd';
+
+-- Add Marta's user role to the data scientist group role.
+GRANT data_scientist TO Marta;
+
+-- Remove Marta's user role from the data scientist group role.
+REVOKE data_scientist FROM Marta;
