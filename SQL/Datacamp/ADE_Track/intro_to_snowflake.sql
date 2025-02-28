@@ -21,3 +21,35 @@ SELECT
 FROM uber_request_data
 WHERE request_date > '2016-06-01'
 AND drop_time < '06:00:00';
+
+-- Standardize the status entries in the uber_request_data table. Convert all entries in the status column to lowercase.
+SELECT LOWER(status) FROM uber_request_data
+
+-- Convert all entries in the pickup_point column to uppercase.
+SELECT UPPER(pickup_point) FROM uber_request_data
+
+-- Complete the CONCAT function to combine the pickup_point and status with the given comments.
+SELECT CONCAT('Trip from ', pickup_point, ' was completed with status: ', status) AS trip_comment
+FROM uber_request_data
+
+-- Retrieve the order_id and pizza_id from order_details for orders where the total pizza quantity is more than 3 using the HAVING clause.
+-- Group the orders using GROUP BY ALL
+-- Arrange your results by order_id and then by total_quantity in a descending sequence.
+SELECT order_id, pizza_id, SUM(quantity) AS total_quantity
+FROM order_details
+GROUP BY ALL
+HAVING SUM(quantity) > 3
+ORDER BY order_id DESC, total_quantity DESC;
+
+-- Select the current date and current time using a valid date and time functions.
+SELECT CURRENT_DATE, CURRENT_TIME
+
+-- Complete the concatenation for the CURRENT_DATE and CURRENT_TIME, converting the result to TIMESTAMP.
+SELECT CONCAT(CURRENT_DATE, ' ', CURRENT_TIME)::TIMESTAMP
+
+-- Extract month from the concatenated timestamp and alias as concat_month
+-- Filter records from uber_request_data where request_timestamp's month is greater or equal than concat_month.
+SELECT *,
+	EXTRACT(MONTH FROM CONCAT(CURRENT_DATE, ' ', CURRENT_TIME)::TIMESTAMP) AS concat_month
+FROM uber_request_data
+WHERE EXTRACT(month FROM request_timestamp) >= EXTRACT(MONTH FROM CONCAT(CURRENT_DATE, ' ', CURRENT_TIME)::TIMESTAMP)
