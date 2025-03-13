@@ -6,3 +6,31 @@
 
 -- Question 1 of 3
 -- How many total ad impressions did we receive from custom audience segments in October 2024?
+SELECT SUM(impressions) AS total_ad_impressions
+FROM ad_performance
+JOIN audience_segments
+USING(audience_segment_id)
+WHERE segment_name LIKE 'Custom Audience%'
+AND date BETWEEN '2024-10-01' AND '2024-10-31';
+
+-- Question 2
+-- What is the total number of conversions we achieved from each custom audience segment in October 2024?
+SELECT segment_name, SUM(conversions) AS total_conversions
+FROM ad_performance
+JOIN audience_segments
+USING(audience_segment_id)
+WHERE segment_name LIKE 'Custom Audience%'
+AND date BETWEEN '2024-10-01' AND '2024-10-31'
+GROUP BY segment_name;
+
+-- Question 3
+-- For each custom audience or lookalike segment, calculate the cost per conversion. Only return this for segments that had non-zero spend and non-zero conversions.
+-- Cost per conversion = Total ad spend / Total number of conversions
+SELECT segment_name, SUM(ad_spend) / SUM(conversions) AS cost_per_conversion
+FROM ad_performance
+JOIN audience_segments
+USING(audience_segment_id)
+WHERE (segment_name LIKE 'Custom Audience%' OR segment_name LIKE 'Lookalike Audience%')
+  AND ad_spend > 0
+  AND conversions > 0
+GROUP BY segment_name;
