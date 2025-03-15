@@ -30,7 +30,7 @@ SELECT segment_name, SUM(ad_spend) / SUM(conversions) AS cost_per_conversion
 FROM ad_performance
 JOIN audience_segments
 USING(audience_segment_id)
-WHERE (segment_name LIKE 'Custom Audience%' OR segment_name LIKE 'Lookalike Audience%')
-  AND ad_spend > 0
-  AND conversions > 0
-GROUP BY segment_name;
+WHERE segment_name LIKE 'Custom Audience%' 
+  OR segment_name LIKE 'Lookalike Audience%'
+GROUP BY segment_name
+  HAVING SUM(ad_spend) > 0 AND SUM(conversions) > 0;
