@@ -22,3 +22,13 @@
 -- second_highest_salary
 -- 2230
 -- The output represents the second highest salary among all employees. In this case, the second highest salary is $2,230.
+
+-- Solution
+WITH salary_order AS (
+  SELECT
+    salary,
+    RANK() OVER (ORDER BY salary DESC) AS salary_number
+  FROM employee)
+SELECT DISTINCT salary AS second_highest_salary
+FROM salary_order
+WHERE salary_number = 2;
