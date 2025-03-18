@@ -6,3 +6,20 @@
 
 -- Question 1 of 3
 -- We need to measure initial user engagement with the categorization features. How many photos have been categorized by the system in January 2024?
+SELECT COUNT(photo_id)
+FROM automatic_photo_categorization
+WHERE categorization_date BETWEEN '2024-01-01' AND '2024-01-31';
+
+-- Question 2
+-- What is the total number of unique users who have interacted with the automatic categorization feature in February 2024?
+SELECT COUNT(DISTINCT user_id)
+FROM automatic_photo_categorization
+WHERE categorization_date BETWEEN '2024-02-01' AND '2024-02-29';
+
+-- Question 3
+-- For March 2024, calculate the total number of automatically categorized photos per user and rename the resulting column to 'total_categorized_photos'. 
+-- We want to identify the most active users for user research purposes.
+SELECT user_id, COUNT(photo_id) AS total_categorized_photos
+FROM automatic_photo_categorization
+WHERE categorization_date BETWEEN '2024-03-01' AND '2024-03-31'
+GROUP BY user_id;
