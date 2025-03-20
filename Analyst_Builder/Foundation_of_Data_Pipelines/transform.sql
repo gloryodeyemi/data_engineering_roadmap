@@ -1,7 +1,7 @@
 DROP TABLE stage_earthquake;
 
 CREATE TABLE stage_earthquake(
-	ts TIMESTAMP,
+    ts TIMESTAMP,
     dt DATE,
     place VARCHAR(100),
     magnitude NUMERIC(32,8),

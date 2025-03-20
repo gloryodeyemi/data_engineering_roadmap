@@ -1,4 +1,4 @@
-# Foundation of Data Pipeline
+# Foundation of Data Pipelines
 Foundations of Data Pipelines with Apache Airflow and AWS Glue.
 
 ## Topics Covered
