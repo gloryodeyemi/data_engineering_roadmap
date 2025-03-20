@@ -47,10 +47,24 @@ def process_earthquake_data():
                 'file_name': filename
             }
             earthquakes.append(earthquake)
-        
+        # print(earthquakes)
+
         # convert the list of dictionaries to a DataFrame
         df = pd.DataFrame(earthquakes)
 
+        # use today's date variable to create a file name
+
+        # check if the file exists
+        if os.path.exists(filename):
+            # if it exists, remove it
+            os.remove(filename)
+            print(f"File {filename} removed.")
+
+        # create a new file
+        df.to_csv(filename, index=False)
+        print(f"File {filename} created and written to.")
+    else:
+        print(f"Failed to retrieve data: {response.status_code}")
 
 def main():
     process_earthquake_data()
