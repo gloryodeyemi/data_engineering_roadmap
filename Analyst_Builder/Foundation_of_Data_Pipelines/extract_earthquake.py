@@ -32,7 +32,7 @@ def process_earthquake_data():
 
         date = today_date.strftime("%Y_%m_%d")
 
-        filename = f"/Users/new/Downloads/Tutorials/Data_Engineering/DE_Roadmap/Python/Analyst_Builder/Foundation_of_Data_Pipelines/data/earthquake_{date}.csv"
+        filename = f"/Users/new/Downloads/Tutorials/Data_Engineering/DE_Roadmap/Analyst_Builder/Foundation_of_Data_Pipelines/data/earthquake_{date}.csv"
 
         for feature in features:
             properties = feature['properties']
