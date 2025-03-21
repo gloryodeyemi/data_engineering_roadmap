@@ -7,7 +7,7 @@
 * Syntax
 * Structured Query Language
 
-### Module 1: Building Databases
+### Module 2: Building Databases
 * SQL Data Types
 * Creating Databases
 * Constraints
