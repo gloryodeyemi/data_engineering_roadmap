@@ -4,17 +4,20 @@ USE cfg_courses;
 DROP TABLE Course;
 DROP TABLE Instructor;
 
-CREATE TABLE Course (
-	course_id INT NOT NULL,
-	course_name VARCHAR(100) NOT NULL,
-	description VARCHAR(255) NULL
-);
-
 CREATE TABLE Instructor (
-	instructor_id INT NOT NULL,
+	instructor_id INT PRIMARY KEY,
 	instructor_name VARCHAR(100) NOT NULL,
 	email VARCHAR(255) NOT NULL
 );
+
+CREATE TABLE Course (
+	course_id INT PRIMARY KEY,
+	course_name VARCHAR(100) NOT NULL,
+	description VARCHAR(255) NULL,
+	instructor_id INT NOT NULL,
+	FOREIGN KEY (instructor_id) REFERENCES Instructor(instructor_id)
+);
+
 
 INSERT INTO Course
 VALUES 
