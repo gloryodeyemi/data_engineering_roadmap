@@ -1,16 +1,19 @@
 CREATE DATABASE cfg_courses;
 USE cfg_courses;
 
+DROP TABLE Course;
+DROP TABLE Instructor;
+
 CREATE TABLE Course (
-	course_id INT,
-	course_name VARCHAR(100),
-	description VARCHAR(255)
+	course_id INT NOT NULL,
+	course_name VARCHAR(100) NOT NULL,
+	description VARCHAR(255) NULL
 );
 
 CREATE TABLE Instructor (
-	instructor_id INT,
-	instructor_name VARCHAR(100),
-	email VARCHAR(255)
+	instructor_id INT NOT NULL,
+	instructor_name VARCHAR(100) NOT NULL,
+	email VARCHAR(255) NOT NULL
 );
 
 INSERT INTO Course
