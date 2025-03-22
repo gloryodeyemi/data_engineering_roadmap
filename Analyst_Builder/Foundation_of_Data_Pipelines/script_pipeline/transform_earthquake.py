@@ -53,12 +53,12 @@ def main():
     # connect to the PostgreSQL database
     conn = psycopg2.connect(**db_params)
 
-    # today_date = datetime.now()
-    # start_date = (today_date - timedelta(days=15)).strftime("%Y-%m-%d")
-    # end_date = today_date.strftime("%Y-%m-%d")
+    today_date = datetime.now()
+    start_date = (today_date - timedelta(days=15)).strftime("%Y-%m-%d")
+    end_date = today_date.strftime("%Y-%m-%d")
 
-    start_date = '2025-03-10'
-    end_date = '2025-03-15'
+    # start_date = '2025-03-10'
+    # end_date = '2025-03-15'
 
     try:
         # delete old records

@@ -1,6 +1,7 @@
 import psycopg2
 import os
 from dotenv import load_dotenv
+from datetime import datetime
 
 
 def delete_old_records(conn, csv_file_path):
@@ -41,8 +42,11 @@ def main():
     # connect to the PostgreSQL database
     conn = psycopg2.connect(**db_params)
 
+    today_date = datetime.now()
+    t_date = today_date.strftime("%Y_%m_%d")
+
     # path to your csv file
-    csv_file_path = '/Users/new/Downloads/Tutorials/Data_Engineering/DE_Roadmap/Analyst_Builder/Foundation_of_Data_Pipelines/data/earthquake_2025_03_20.csv'
+    csv_file_path = f'/Users/new/Downloads/Tutorials/Data_Engineering/DE_Roadmap/Analyst_Builder/Foundation_of_Data_Pipelines/data/earthquake_{t_date}.csv'
 
     try:
         # delete old records
