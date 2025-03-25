@@ -148,3 +148,37 @@ df1 = xls.parse(0, skiprows=1, names=['Country', 'AAM due to War (2002)'])
 print(df1.head())
 df2 = xls.parse(1, usecols=[0], skiprows=1, names=['Country'])
 print(df2.head())
+
+"""
+Import the module SAS7BDAT from the library sas7bdat.
+In the context of the file 'sales.sas7bdat', load its contents to a DataFrame df_sas, using the method .to_data_frame() on the object file.
+Print the head of the DataFrame df_sas.
+Execute your entire script to produce a histogram plot!
+"""
+from sas7bdat import SAS7BDAT
+
+with SAS7BDAT('sales.sas7bdat') as file:
+    df_sas = file.to_data_frame()
+
+print(df_sas.head())
+
+# Plot histogram of DataFrame features (pandas and pyplot already imported)
+pd.DataFrame.hist(df_sas[['P']])
+plt.ylabel('count')
+plt.show()
+
+"""
+Use pd.read_stata() to load the file 'disarea.dta' into the DataFrame df.
+Print the head of the DataFrame df.
+Visualize your results by plotting a histogram of the column disa10. We’ve already provided this code for you, so just run it!
+"""
+import pandas as pd
+
+df = pd.read_stata('disarea.dta')
+print(df.head())
+
+# Plot histogram of one column of the DataFrame
+pd.DataFrame.hist(df[['disa10']])
+plt.xlabel('Extent of disease')
+plt.ylabel('Number of countries')
+plt.show()
