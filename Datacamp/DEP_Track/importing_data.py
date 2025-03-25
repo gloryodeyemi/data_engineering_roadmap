@@ -103,3 +103,48 @@ pd.DataFrame.hist(data[['Age']])
 plt.xlabel('Age (years)')
 plt.ylabel('count')
 plt.show()
+
+"""
+Import the pickle package.
+Complete the second argument of open() so that it is read only for a binary file. This argument will be a string of two letters, one signifying 'read only', the other 'binary'.
+Pass the correct argument to pickle.load(); it should use the variable that is bound to open.
+Print the data, d.
+Print the datatype of d; take your mind back to your previous use of the function type().
+"""
+import pickle
+with open('data.pkl', 'rb') as file:
+    d = pickle.load(file)
+print(d)
+print(type(d))
+
+"""
+Assign the spreadsheet filename (provided above) to the variable file.
+Pass the correct argument to pd.ExcelFile() to load the file using pandas, assigning the result to the variable xls.
+Print the sheetnames of the Excel spreadsheet by passing the necessary argument to the print() function.
+"""
+import pandas as pd
+file = 'battledeath.xlsx'
+xls = pd.ExcelFile(file)
+print(xls.sheet_names)
+
+"""
+Load the sheet '2004' into the DataFrame df1 using its name as a string.
+Print the head of df1 to the shell.
+Load the sheet 2002 into the DataFrame df2 using its index (0).
+Print the head of df2 to the shell.
+"""
+df1 = xls.parse('2004')
+print(df1.head())
+df2 = xls.parse(0)
+print(df2.head())
+
+"""
+Parse the first sheet by index. In doing so, skip the first row of data and name the columns 'Country' and 'AAM due to War (2002)' using the 
+argument names. The values passed to skiprows and names all need to be of type list.
+Parse the second sheet by index. In doing so, parse only the first column with the usecols parameter, skip the first row and rename the 
+column 'Country'. The argument passed to usecols also needs to be of type list.
+"""
+df1 = xls.parse(0, skiprows=1, names=['Country', 'AAM due to War (2002)'])
+print(df1.head())
+df2 = xls.parse(1, usecols=[0], skiprows=1, names=['Country'])
+print(df2.head())
