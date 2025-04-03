@@ -169,3 +169,135 @@ with open("a_movie.json") as json_file:
 # Print each key-value pair in json_data
 for k in json_data.keys():
     print(k + ': ', json_data[k])
+
+"""
+Import the requests package.
+Assign to the variable url the URL of interest in order to query 'http://www.omdbapi.com' for the data corresponding to the movie The 
+Social Network. The query string should have two arguments: apikey=72bc447a and t=the+social+network. You can combine them as follows: 
+apikey=72bc447a&t=the+social+network.
+Print the text of the response object r by using its text attribute and passing the result to the print() function.
+"""
+import requests
+
+url = 'http://www.omdbapi.com/?apikey=72bc447a&t=the+social+network'
+r = requests.get(url)
+print(r.text)
+
+"""
+Pass the variable url to the requests.get() function in order to send the relevant request and catch the response, assigning the resultant 
+response message to the variable r.
+Apply the json() method to the response object r and store the resulting dictionary in the variable json_data.
+Hit submit to print the key-value pairs of the dictionary json_data to the shell.
+"""
+import requests
+
+# Assign URL to variable: url
+url = 'http://www.omdbapi.com/?apikey=72bc447a&t=social+network'
+r = requests.get(url)
+json_data = r.json()
+
+for k in json_data.keys():
+    print(k + ': ', json_data[k])
+
+"""
+Assign the relevant URL to the variable url.
+Apply the json() method to the response object r and store the resulting dictionary in the variable json_data.
+The variable pizza_extract holds the HTML of an extract from Wikipedia's Pizza page as a string; use the function print() to print this 
+string to the shell.
+"""
+import requests
+
+url = 'https://en.wikipedia.org/w/api.php?action=query&prop=extracts&format=json&exintro=&titles=pizza'
+r = requests.get(url)
+
+json_data = r.json()
+pizza_extract = json_data['query']['pages']['24768']['extract']
+print(pizza_extract)
+
+"""
+Create your Stream object with the credentials given.
+Filter your Stream variable for the keywords "clinton", "trump", "sanders", and "cruz".
+"""
+# Store credentials in relevant variables
+# Store credentials in relevant variables
+consumer_key = ""
+consumer_secret = ""
+access_token = ""
+access_token_secret = ""
+
+# Create your Stream object with credentials
+stream = tweepy.Stream(consumer_key, consumer_secret, access_token, access_token_secret)
+
+# Filter your Stream variable
+stream.filter(["clinton", "trump", "sanders", "cruz"])
+
+"""
+Assign the filename 'tweets.txt' to the variable tweets_data_path.
+Initialize tweets_data as an empty list to store the tweets in.
+Within the for loop initiated by for line in tweets_file:, load each tweet into a variable, tweet, using json.loads(), then append tweet to tweets_data using the append() method.
+Hit submit and check out the keys of the first tweet dictionary printed to the shell.
+"""
+import json
+
+tweets_data_path = 'tweets.txt'
+tweets_data = []
+
+# Open connection to file
+tweets_file = open(tweets_data_path, "r")
+
+# Read in tweets and store in list: tweets_data
+for line in tweets_file:
+    tweet = json.loads(line)
+    tweets_data.append(tweet)
+
+# Close connection to file
+tweets_file.close()
+
+# Print the keys of the first tweet dict
+print(tweets_data[0].keys())
+
+"""
+Use pd.DataFrame() to construct a DataFrame of tweet texts and languages; to do so, the first argument should be tweets_data, a list of 
+dictionaries. The second argument to pd.DataFrame() is a list of the keys you wish to have as columns. Assign the result of the 
+pd.DataFrame() call to df.
+Print the head of the DataFrame.
+"""
+import pandas as pd
+
+# Build DataFrame of tweet texts and languages
+df = pd.DataFrame(tweets_data, columns=["text", "lang"])
+print(df.head())
+
+"""
+Within the for loop for index, row in df.iterrows():, the code currently increases the value of clinton by 1 each time a tweet (text row) 
+mentioning 'Clinton' is encountered; complete the code so that the same happens for trump, sanders and cruz.
+"""
+[clinton, trump, sanders, cruz] = [0, 0, 0, 0]
+
+for index, row in df.iterrows():
+    clinton += word_in_text('clinton', row['text'])
+    trump += word_in_text('trump', row['text'])
+    sanders += word_in_text('sanders', row['text'])
+    cruz += word_in_text('cruz', row['text'])
+
+"""
+Import both matplotlib.pyplot and seaborn using the aliases plt and sns, respectively.
+Complete the arguments of sns.barplot:
+The first argument should be the list of labels to appear on the x-axis (created in the previous step).
+The second argument should be a list of the variables you wish to plot, as produced in the previous exercise (i.e. a list containing 
+clinton, trump, etc).
+"""
+# Import packages
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Set seaborn style
+sns.set(color_codes=True)
+
+# Create a list of labels:cd
+cd = ['clinton', 'trump', 'sanders', 'cruz']
+
+# Plot the bar chart
+ax = sns.barplot(cd, [clinton, trump, sanders, cruz])
+ax.set(ylabel="count")
+plt.show()
