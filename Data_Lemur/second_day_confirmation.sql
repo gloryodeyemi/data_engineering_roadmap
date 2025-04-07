@@ -40,3 +40,9 @@ user_id
 Explanation:
 Only User 1052 confirmed their sign-up on the second day.
 */
+SELECT user_id 
+FROM emails
+JOIN texts
+USING(email_id)
+WHERE action_date = signup_date + INTERVAL '1 day'
+  AND signup_action = 'Confirmed';
