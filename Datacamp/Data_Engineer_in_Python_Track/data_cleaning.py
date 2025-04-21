@@ -137,3 +137,39 @@ mappings = {'Monday':'weekday', 'Tuesday':'weekday', 'Wednesday': 'weekday',
             'Saturday': 'weekend', 'Sunday': 'weekend'}
 
 airlines['day_week'] = airlines['day'].replace(mappings)
+
+"""
+Remove "Dr.", "Mr.", "Miss" and "Ms." from full_name by replacing them with an empty string "" in that order.
+Run the assert statement using .str.contains() that tests whether full_name still contains any of the honorifics.
+"""
+# Replace "Dr." with empty string ""
+airlines['full_name'] = airlines['full_name'].str.replace("Dr.","")
+
+# Replace "Mr." with empty string ""
+airlines['full_name'] = airlines['full_name'].str.replace("Mr.","")
+
+# Replace "Miss" with empty string ""
+airlines['full_name'] = airlines['full_name'].str.replace("Miss","")
+
+# Replace "Ms." with empty string ""
+airlines['full_name'] = airlines['full_name'].str.replace("Ms.","")
+
+# Assert that full_name has no honorifics
+assert airlines['full_name'].str.contains('Ms.|Mr.|Miss|Dr.').any() == False
+
+"""
+Using the airlines DataFrame, store the length of each instance in the survey_response column in resp_length by using .str.len().
+Isolate the rows of airlines with resp_length higher than 40.
+Assert that the smallest survey_response length in airlines_survey is now bigger than 40.
+"""
+# Store length of each row in survey_response column
+resp_length = airlines['survey_response'].str.len()
+
+# Find rows in airlines where resp_length > 40
+airlines_survey = airlines[resp_length > 40]
+
+# Assert minimum survey_response length is > 40
+assert airlines_survey['survey_response'].str.len().min() > 40
+
+# Print new survey_response column
+print(airlines_survey['survey_response'])
