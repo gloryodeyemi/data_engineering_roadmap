@@ -208,3 +208,77 @@ banking['acct_year'] = banking['account_opened'].dt.strftime('%Y')
 
 # Print acct_year
 print(banking['acct_year'])
+
+"""
+Find the rows where the sum of all rows of the fund_columns in banking are equal to the inv_amount column.
+Store the values of banking with consistent inv_amount in consistent_inv, and those with inconsistent ones in inconsistent_inv.
+"""
+# Store fund columns to sum against
+fund_columns = ['fund_A', 'fund_B', 'fund_C', 'fund_D']
+
+# Find rows where fund_columns row sum == inv_amount
+inv_equ = banking[['fund_A', 'fund_B', 'fund_C', 'fund_D']].sum(axis=1) == banking['inv_amount']
+
+# Store consistent and inconsistent data
+consistent_inv = banking[inv_equ]
+inconsistent_inv = banking[~inv_equ]
+
+# Store consistent and inconsistent data
+print("Number of inconsistent investments: ", inconsistent_inv.shape[0])
+
+"""
+Store today's date into today, and manually calculate customers' ages and store them in ages_manual.
+Find all rows of banking where the age column is equal to ages_manual and then filter banking into consistent_ages and inconsistent_ages.
+"""
+# Store today's date and find ages
+today = dt.date.today()
+ages_manual = today.year - banking['birth_date'].dt.year
+
+# Find rows where age column == ages_manual
+age_equ = banking['age'] == ages_manual
+
+# Store consistent and inconsistent data
+consistent_ages = banking[age_equ]
+inconsistent_ages = banking[~age_equ]
+
+# Store consistent and inconsistent data
+print("Number of inconsistent ages: ", inconsistent_ages.shape[0])
+
+"""
+Print the number of missing values by column in the banking DataFrame.
+Plot and show the missingness matrix of banking with the msno.matrix() function.
+Isolate the values of banking missing values of inv_amount into missing_investors and with non-missing inv_amount values into investors.
+Sort the banking DataFrame by the age column and plot the missingness matrix of banking_sorted.
+"""
+print(banking.isna().sum())
+
+# Visualize missingness matrix
+msno.matrix(banking)
+plt.show()
+
+# Isolate missing and non missing values of inv_amount
+missing_investors = banking[banking['inv_amount'].isna()]
+investors = banking[~banking['inv_amount'].isna()]
+
+# Sort banking by age and visualize
+banking_sorted = banking.sort_values(by='age')
+msno.matrix(banking_sorted)
+plt.show()
+
+"""
+Use .dropna() to drop missing values of the cust_id column in banking and store the results in banking_fullid.
+Use inv_amount to compute the estimated account amounts for banking_fullid by setting the amounts equal to inv_amount * 5, and assign the 
+results to acct_imp.
+Impute the missing values of acct_amount in banking_fullid with the newly created acct_imp using .fillna().
+"""
+# Drop missing values of cust_id
+banking_fullid = banking.dropna(subset=['cust_id'])
+
+# Compute estimated acct_amount
+acct_imp = banking_fullid['inv_amount'] * 5
+
+# Impute missing acct_amount with corresponding acct_imp
+banking_imputed = banking_fullid.fillna({'acct_amount': acct_imp})
+
+# Print number of missing values
+print(banking_imputed.isna().sum())
