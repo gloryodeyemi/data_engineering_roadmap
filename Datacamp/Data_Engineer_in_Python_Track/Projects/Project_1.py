@@ -25,11 +25,11 @@ df['credit_default'] = df['credit_default'].replace({"yes": 1, "no": 0}).astype(
 # 4. mortgage column - Convert to boolean data type: 1 if "yes", otherwise 0
 df['mortgage'] = df['mortgage'].replace({"yes": 1, "no": 0}).astype('bool')
 
-# create client DataFrame
+# 5. create client DataFrame
 client = df[['client_id', 'age', 'job', 'marital', 'education', 'credit_default', 'mortgage']]
 print(client.head())
 
-# save client DataFrame as csv file
+# 6. save client DataFrame as csv file
 client.to_csv('client.csv', index=False)
 
 # Campaign DataFrame
@@ -45,8 +45,17 @@ df['last_contact_date'] = df['day'].astype(str) + '-' + df['month'] + '-' + df['
 df['last_contact_date'] = pd.to_datetime(df['last_contact_date'], format='%d-%b-%Y')
 # df['last_contact_date'] = pd.to_datetime(df[['year', 'month', 'day']])
 
+# 4. create campaign DataFrame
 campaign = df[['client_id', 'number_contacts', 'contact_duration', 'previous_campaign_contacts', 'previous_outcome', 'campaign_outcome', 'last_contact_date']]
 print(campaign.head())
 
-# 6. save campaign DataFrame as csv file
+# 5. save campaign DataFrame as csv file
 campaign.to_csv('campaign.csv', index=False)
+
+# Economics DataFrame
+# 1. create economics DataFrame
+economics = df[['client_id', 'cons_price_idx', 'euribor_three_months']]
+print(economics.head())
+
+# 2. save economics DataFrame as csv file
+economics.to_csv('economics.csv', index=False)
