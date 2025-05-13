@@ -123,3 +123,60 @@ print(sorted(uniq_names_func) == sorted(uniq_names_set))
 uniq_types = set(primary_types) 
 uniq_gens = set(generations)
 print(uniq_types, uniq_gens, sep='\n') 
+
+"""Eliminating Loops"""
+gen1_gen2_name_lengths_loop = []
+
+for name,gen in zip(poke_names, poke_gens):
+    if gen < 3:
+        name_length = len(name)
+        poke_tuple = (name, name_length)
+        gen1_gen2_name_lengths_loop.append(poke_tuple)
+
+"""
+Eliminate the above for loop using list comprehension and the map() function:
+
+Use list comprehension to collect each Pokémon that belongs to generation 1 or generation 2. Save this as gen1_gen2_pokemon.
+Use the map() function to collect the number of letters in each Pokémon's name within the gen1_gen2_pokemon list. Save this map object as name_lengths_map.
+Combine gen1_gen2_pokemon and name_lengths_map into a list called gen1_gen2_name_lengths.
+"""
+# Collect Pokémon that belong to generation 1 or generation 2
+gen1_gen2_pokemon = [name for name,gen in zip(poke_names, poke_gens) if gen < 3]
+
+# Create a map object that stores the name lengths
+name_lengths_map = map(len, gen1_gen2_pokemon)
+
+# Combine gen1_gen2_pokemon and name_lengths_map into a list
+gen1_gen2_name_lengths = [*zip(gen1_gen2_pokemon, name_lengths_map)]
+
+print(gen1_gen2_name_lengths_loop[:5])
+print(gen1_gen2_name_lengths[:5])
+
+# Loop 2
+poke_list = []
+
+for pokemon,row in zip(names, stats):
+    total_stats = np.sum(row)
+    avg_stats = np.mean(row)
+    poke_list.append((pokemon, total_stats, avg_stats))
+
+"""
+Replace the above for loop using NumPy:
+Create a total stats array (total_stats_np) using the .sum() method and specifying the correct axis.
+Create an average stats array (avg_stats_np) using the .mean() method and specifying the correct axis.
+Create a final output list (poke_list_np) by combining the names list, the total_stats_np array, and the avg_stats_np array.
+"""
+# Create a total stats array
+total_stats_np = np.sum(stats, axis=1)
+
+# Create an average stats array
+avg_stats_np = np.mean(stats, axis=1)
+
+# Combine names, total_stats_np, and avg_stats_np into a list
+poke_list_np = [*zip(names, total_stats_np, avg_stats_np)]
+
+print(poke_list_np == poke_list, '\n')
+print(poke_list_np[:3])
+print(poke_list[:3], '\n')
+top_3 = sorted(poke_list_np, key=lambda x: x[1], reverse=True)[:3]
+print('3 strongest Pokémon:\n{}'.format(top_3))
