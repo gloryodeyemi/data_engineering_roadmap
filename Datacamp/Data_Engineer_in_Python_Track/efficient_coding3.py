@@ -54,3 +54,72 @@ print(combos_2, '\n')
 # Collect all possible combinations of 4 Pokémon directly into a list
 combos_4 = [*combinations(pokemon, 4)]
 print(combos_4)
+
+"""
+Convert both lists (ash_pokedex and misty_pokedex) to sets called ash_set and misty_set respectively.
+Find the Pokémon that both Ash and Misty have in common using a set method.
+Find the Pokémon that are within Ash's Pokédex but are not within Misty's Pokédex with a set method.
+Use a set method to find the Pokémon that are unique to either Ash or Misty (i.e., the Pokémon that exist in exactly one of the Pokédexes but not both).
+"""
+# Convert both lists to sets
+ash_set = set(ash_pokedex)
+misty_set = set(misty_pokedex)
+
+# Find the Pokémon that exist in both sets
+both = ash_set.intersection(misty_set)
+print(both)
+
+# Find the Pokémon that Ash has and Misty does not have
+ash_only = ash_set.difference(misty_set)
+print(ash_only)
+
+# Find the Pokémon that are in only one set (not both)
+unique_to_set = ash_set.symmetric_difference(misty_set)
+print(unique_to_set)
+
+"""
+Convert Brock's Pokédex list (brock_pokedex) to a set called brock_pokedex_set.
+Check if 'Psyduck' is in Ash's Pokédex list (ash_pokedex) and if 'Psyduck' is in Brock's Pokédex set (brock_pokedex_set).
+Check if 'Machop' is in Ash's Pokédex list (ash_pokedex) and if 'Machop' is in Brock's Pokédex set (brock_pokedex_set).
+"""
+# Convert Brock's Pokédex to a set
+brock_pokedex_set = set(brock_pokedex)
+print(brock_pokedex_set)
+
+# Check if Psyduck is in Ash's list and Brock's set
+print('Psyduck' in ash_pokedex)
+print('Psyduck' in brock_pokedex_set)
+
+# Check if Machop is in Ash's list and Brock's set
+print('Machop' in ash_pokedex)
+print('Machop' in brock_pokedex_set)
+
+"""
+Use the provided function to collect the unique Pokémon in the names list. Save this as uniq_names_func.
+Use a set data type to collect the unique Pokémon in the names list. Save this as uniq_names_set.
+Use the most efficient approach for gathering unique items to collect the unique Pokémon types (from the primary_types list) and Pokémon generations (from the generations list).
+"""
+def find_unique_items(data):
+    uniques = []
+
+    for item in data:
+        if item not in uniques:
+            uniques.append(item)
+
+    return uniques
+
+# Use find_unique_items() to collect unique Pokémon names
+uniq_names_func = find_unique_items(names)
+print(len(uniq_names_func))
+
+# Convert the names list to a set to collect unique Pokémon names
+uniq_names_set = set(names)
+print(len(uniq_names_set))
+
+# Check that both unique collections are equivalent
+print(sorted(uniq_names_func) == sorted(uniq_names_set))
+
+# Use the best approach to collect unique primary types and generations
+uniq_types = set(primary_types) 
+uniq_gens = set(generations)
+print(uniq_types, uniq_gens, sep='\n') 
