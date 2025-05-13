@@ -180,3 +180,122 @@ print(poke_list_np[:3])
 print(poke_list[:3], '\n')
 top_3 = sorted(poke_list_np, key=lambda x: x[1], reverse=True)[:3]
 print('3 strongest Pokémon:\n{}'.format(top_3))
+
+"""Writing Efficient Loops"""
+for gen,count in gen_counts.items():
+    total_count = len(generations)
+    gen_percent = round(count / total_count * 100, 2)
+    print(
+      'generation {}: count = {:3} percentage = {}'
+      .format(gen, count, gen_percent)
+    )
+
+"""
+Import Counter from the collections module.
+Use Counter() to collect the count of each generation from the generations list. Save this as gen_counts.
+Write a better for loop that places a one-time calculation outside (above) the loop. Use the exact same syntax as the original for loop 
+(simply copy and paste the one-time calculation above the loop).
+"""
+# Import Counter
+from collections import Counter
+
+# Collect the count of each generation
+gen_counts = Counter(generations)
+
+# Improve for loop by moving one calculation above the loop
+total_count = len(generations)
+
+for gen,count in gen_counts.items():
+    gen_percent = round(count / total_count * 100, 2)
+    print('generation {}: count = {:3} percentage = {}'
+          .format(gen, count, gen_percent))
+    
+
+enumerated_pairs = []
+
+for i,pair in enumerate(possible_pairs, 1):
+    enumerated_pair_tuple = (i,) + pair
+    enumerated_pair_list = list(enumerated_pair_tuple)
+    enumerated_pairs.append(enumerated_pair_list)
+
+"""
+combinations from the itertools module has been loaded into your session. Use it to create a list called possible_pairs that contains all 
+possible pairs of Pokémon types (each pair has 2 Pokémon types).
+Create an empty list called enumerated_tuples above the for loop.
+Use a built-in function to convert each tuple in enumerated_tuples to a list.
+"""
+# Collect all possible pairs using combinations()
+possible_pairs = [*combinations(pokemon_types, 2)]
+
+# Create an empty list called enumerated_tuples
+enumerated_tuples = []
+
+for i,pair in enumerate(possible_pairs, 1):
+    enumerated_pair_tuple = (i,) + pair
+    enumerated_tuples.append(enumerated_pair_tuple)
+
+# Convert all tuples in enumerated_tuples to a list
+enumerated_pairs = [*map(list, enumerated_tuples)]
+print(enumerated_pairs)
+
+"""
+The below code was written to calculate the HP z-score for each Pokémon and gather the Pokémon with the highest HPs based on their z-scores:
+"""
+poke_zscores = []
+
+for name,hp in zip(names, hps):
+    hp_avg = hps.mean()
+    hp_std = hps.std()
+    z_score = (hp - hp_avg)/hp_std
+    poke_zscores.append((name, hp, z_score))
+highest_hp_pokemon = []
+
+for name,hp,zscore in poke_zscores:
+    if zscore > 2:
+        highest_hp_pokemon.append((name, hp, zscore))
+
+"""
+Use NumPy to eliminate the for loop used to create the z-scores.
+Then, combine the names, hps, and z_scores objects together into a list called poke_zscores2.
+Use list comprehension to replace the for loop used to collect Pokémon with the highest HPs based on their z-score.
+"""
+# Calculate the total HP avg and total HP standard deviation
+hp_avg = hps.mean()
+hp_std = hps.std()
+
+# Use NumPy to eliminate the previous for loop
+z_scores = (hps - hp_avg)/hp_std
+
+# Combine names, hps, and z_scores
+poke_zscores2 = [*zip(names, hps, z_scores)]
+print(*poke_zscores2[:3], sep='\n')
+
+# Use list comprehension with the same logic as the highest_hp_pokemon code block
+highest_hp_pokemon2 = [(name, hp, z_score) for name, hp, z_score in poke_zscores2 if z_score > 2]
+print(*highest_hp_pokemon2, sep='\n')
+
+
+"""
+Use %%timeit (cell magic mode) within your IPython console to compare the runtimes between the original code blocks and the new code you developed using NumPy and list comprehension.
+
+Don't include the print() statements when timing. You should include ten lines of code when timing the original code blocks and five lines of code when timing the new code you developed. 
+You may need to press SHIFT+ENTER after entering %%timeit to get to a new line within your IPython console.
+"""
+# %%timeit
+poke_zscores = []
+for name,hp in zip(names, hps):
+    hp_avg = hps.mean()
+    hp_std = hps.std()
+    z_score = (hp - hp_avg)/hp_std
+    poke_zscores.append((name, hp, z_score))
+highest_hp_pokemon = []
+for name,hp,zscore in poke_zscores:
+    if zscore > 2:
+        highest_hp_pokemon.append((name, hp, zscore))
+
+# %%timeit
+hp_avg = hps.mean()
+hp_std = hps.std()
+z_scores = (hps - hp_avg)/hp_std
+poke_zscores2 = [*zip(names, hps, z_scores)]
+highest_hp_pokemon2 = [(name, hp, z_score) for name, hp, z_score in poke_zscores2 if z_score > 2]
