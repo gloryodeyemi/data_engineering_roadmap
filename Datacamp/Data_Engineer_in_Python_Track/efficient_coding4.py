@@ -135,3 +135,70 @@ print(dbacks_df, '\n')
 
 # Display dbacks_df where WP is greater than 0.50
 print(dbacks_df[dbacks_df['WP'] >= 0.50])
+
+"""
+Use the right method to collect the underlying 'W' and 'G' arrays of baseball_df and pass them directly into the calc_win_perc() function. 
+Store the result as a variable called win_percs_np.
+Create a new column in baseball_df called 'WP' that contains the win percentages you just calculated.
+"""
+# Use the W array and G array to calculate win percentages
+win_percs_np = calc_win_perc(baseball_df['W'].values, baseball_df['G'].values)
+
+# Append a new column to baseball_df that stores all win percentages
+baseball_df['WP'] = win_percs_np
+
+print(baseball_df.head())
+
+"""
+Use timeit in cell magic mode within your IPython console to compare the runtimes between the old code block using .iloc and the new code you 
+developed using NumPy arrays.
+"""
+"""# %%timeit"""
+win_percs_list = []
+for i in range(len(baseball_df)):
+    row = baseball_df.iloc[i]
+    wins = row['W']
+    games_played = row['G']
+    win_perc = calc_win_perc(wins, games_played)
+    win_percs_list.append(win_perc)
+baseball_df['WP'] = win_percs_list
+
+"""# %%timeit"""
+win_percs_np = calc_win_perc(baseball_df['W'].values, baseball_df['G'].values)
+baseball_df['WP'] = win_percs_np
+
+"""
+OrderedDict([('Team', 'Abbreviated team name'),
+             ('League', 'Specifies National League or American League'),
+             ('Year', "Each season's year"),
+             ('RS', 'Runs scored in a season'),
+             ('RA', 'Runs allowed in a season'),
+             ('W', 'Wins in a season'),
+             ('G', 'Games played in a season'),
+             ('Playoffs', '`1` if a team made the playoffs; `0` if they did not'),
+             ('WP', 'True win percentage for a season')])
+"""
+def predict_win_perc(RS, RA):
+    prediction = RS ** 2 / (RS ** 2 + RA ** 2)
+    return np.round(prediction, 2)
+
+"""
+Use a for loop and .itertuples() to predict the win percentage for each row of baseball_df with the predict_win_perc() function. 
+Save each row's predicted win percentage as win_perc_pred and append each to the win_perc_preds_loop list.
+"""
+win_perc_preds_loop = []
+
+# Use a loop and .itertuples() to collect each row's predicted win percentage
+for row in baseball_df.itertuples():
+    runs_scored = row.RS
+    runs_allowed = row.RA
+    win_perc_pred = predict_win_perc(runs_scored, runs_allowed)
+    win_perc_preds_loop.append(win_perc_pred)
+
+# Apply predict_win_perc to each row of the DataFrame
+win_perc_preds_apply = baseball_df.apply(lambda row: predict_win_perc(row['RS'], row['RA']), axis=1)
+
+# Calculate the win percentage predictions using NumPy arrays
+win_perc_preds_np = predict_win_perc(baseball_df['RS'].values, baseball_df['RA'].values)
+baseball_df['WP_preds'] = win_perc_preds_np
+print(baseball_df.head())
