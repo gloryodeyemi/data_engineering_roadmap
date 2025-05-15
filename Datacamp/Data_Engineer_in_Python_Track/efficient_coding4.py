@@ -79,3 +79,59 @@ for row in yankees_df.itertuples():
 yankees_df['RD'] = run_diffs
 print(yankees_df)
 
+"""
+Analyzing baseball stats with .apply()
+The Tampa Bay Rays want you to analyze their data.
+
+They'd like the following metrics:
+The sum of each column in the data
+The total amount of runs scored in a year ('RS' + 'RA' for each year)
+The 'Playoffs' column in text format rather than using 1's and 0's
+The below function can be used to convert the 'Playoffs' column to text:
+"""
+def text_playoffs(num_playoffs): 
+    if num_playoffs == 1:
+        return 'Yes'
+    else:
+        return 'No' 
+    
+"""
+Apply sum() to each column of rays_df to collect the sum of each column. Be sure to specify the correct axis.
+Apply sum() to each row of rays_df, only looking at the 'RS' and 'RA' columns, and specify the correct axis.
+Use .apply() and a lambda function to apply text_playoffs() to each row's 'Playoffs' value of the rays_df DataFrame.
+"""
+# Gather sum of all columns
+stat_totals = rays_df.apply(sum, axis=0)
+print(stat_totals)
+
+# Gather total runs scored in all games per year
+total_runs_scored = rays_df[['RS', 'RA']].apply(sum, axis=1)
+print(total_runs_scored)
+
+# Convert numeric playoffs to text by applying text_playoffs()
+textual_playoffs = rays_df.apply(lambda row: text_playoffs(row['Playoffs']), axis=1)
+print(textual_playoffs)
+
+"""
+Word has gotten to the Arizona Diamondbacks about your awesome analytics skills. They'd like for you to help settle a debate amongst the managers. 
+One manager claims that the team has made the playoffs every year they have had a win percentage of 0.50 or greater. Another manager says this is 
+not true.
+Let's use the below function and the .apply() method to see which manager is correct.
+"""
+def calc_win_perc(wins, games_played):
+    win_perc = wins / games_played
+    return np.round(win_perc,2)
+
+# Print the first five rows of the dbacks_df DataFrame to see what the data looks like.
+print(dbacks_df.head())
+
+# Create a pandas Series called win_percs by applying the calc_win_perc() function to each row of the DataFrame with a lambda function.
+win_percs = dbacks_df.apply(lambda row: calc_win_perc(row['W'], row['G']), axis=1)
+print(win_percs, '\n')
+
+# Create a new column in dbacks_df called WP that contains the win percentages you calculated in the above step.
+dbacks_df['WP'] = win_percs
+print(dbacks_df, '\n')
+
+# Display dbacks_df where WP is greater than 0.50
+print(dbacks_df[dbacks_df['WP'] >= 0.50])
