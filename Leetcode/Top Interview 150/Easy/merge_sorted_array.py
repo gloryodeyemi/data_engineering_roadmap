@@ -57,4 +57,36 @@ class Solution(object):
         for i in range(1, len(nums2) + 1):
             nums1[-i] = nums2[i-1]
         print(nums1.sort())
-        
+
+
+# Solution 2
+class Solution(object):
+    def merge(self, nums1, m, nums2, n):
+        """
+        :type nums1: List[int]
+        :type m: int
+        :type nums2: List[int]
+        :type n: int
+        :rtype: None Do not return anything, modify nums1 in-place instead.
+        """
+        # Start from the end of the arrays
+        i = m - 1        # Last index of actual nums1 elements
+        j = n - 1        # Last index of nums2
+        k = m + n - 1    # Last index of nums1 total length
+
+        # Merge nums1 and nums2 from the back
+        while i >= 0 and j >= 0:
+            if nums1[i] > nums2[j]:
+                nums1[k] = nums1[i]
+                i -= 1
+            else:
+                nums1[k] = nums2[j]
+                j -= 1
+            k -= 1
+
+        # If any elements remain in nums2, copy them
+        while j >= 0:
+            nums1[k] = nums2[j]
+            j -= 1
+            k -= 1
+            
