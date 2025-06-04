@@ -70,3 +70,45 @@ Machine 0's average time is ((1.520 - 0.712) + (4.120 - 3.140)) / 2 = 0.894
 Machine 1's average time is ((1.550 - 0.550) + (1.420 - 0.430)) / 2 = 0.995
 Machine 2's average time is ((4.512 - 4.100) + (5.000 - 2.500)) / 2 = 1.456
 */
+# Write your MySQL query statement below
+WITH start_activity AS(
+    SELECT
+        machine_id,
+        process_id,
+        timestamp
+    FROM activity
+    WHERE activity_type = "start"
+),
+end_activity AS (
+    SELECT
+        machine_id,
+        process_id,
+        timestamp
+    FROM activity
+    WHERE activity_type = "end"
+)
+SELECT
+    sa.machine_id,
+    ROUND(
+        SUM((ea.timestamp - sa.timestamp)) / COUNT(ea.process_id), 3
+    ) AS processing_time
+FROM start_activity sa
+JOIN end_activity ea
+    ON sa.machine_id = ea.machine_id
+    AND sa.process_id = ea.process_id
+GROUP BY sa.machine_id;
+
+-- Solution 2
+SELECT 
+  a.machine_id,
+  ROUND(
+    AVG(CASE WHEN a.activity_type = 'start' THEN b.timestamp - a.timestamp END),
+    3
+  ) AS processing_time
+FROM Activity a
+JOIN Activity b 
+  ON a.machine_id = b.machine_id 
+  AND a.process_id = b.process_id 
+  AND a.activity_type = 'start' 
+  AND b.activity_type = 'end'
+GROUP BY a.machine_id;
