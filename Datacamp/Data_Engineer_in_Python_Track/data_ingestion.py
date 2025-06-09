@@ -111,3 +111,101 @@ try:
   
 except pd.errors.ParserError:
     print("Your data contained rows that could not be parsed.")
+
+"""
+Load the pandas library as pd.
+Read in fcc_survey.xlsx and assign it to the variable survey_responses.
+Print the first few records of survey_responses.
+"""
+# Load pandas as pd
+import pandas as pd
+
+# Read spreadsheet and assign it to survey_responses
+survey_responses = pd.read_excel('fcc_survey.xlsx')
+
+# View the head of the dataframe
+print(survey_responses.head())
+
+"""
+Create a single string, col_string, specifying that pandas should load column AD and the range AW through BA.
+Load fcc_survey_headers.xlsx', setting skiprows and usecols to skip the first two rows of metadata and get only the columns in col_string.
+View the selected column names in the resulting dataframe.
+"""
+# Create string of lettered columns to load
+col_string = "AW:BA, AD"
+
+# Load data with skiprows and usecols set
+survey_responses = pd.read_excel("fcc_survey_headers.xlsx", 
+                        skiprows=2, 
+                        usecols=col_string)
+
+# View the names of the columns selected
+print(survey_responses.columns)
+
+"""
+Create a dataframe from the second workbook sheet by passing the sheet's position to sheet_name.
+Create a dataframe from the 2017 sheet by providing the sheet's name to read_excel().
+"""
+# Create df from second worksheet by referencing its position
+responses_2017 = pd.read_excel("fcc_survey.xlsx",
+                               sheet_name=1)
+
+# Graph where people would like to get a developer job
+job_prefs = responses_2017.groupby("JobPref").JobPref.count()
+job_prefs.plot.barh()
+plt.show()
+
+# Create df from second worksheet by referencing its name
+responses_2017 = pd.read_excel("fcc_survey.xlsx",
+                               sheet_name='2017')
+
+# Graph where people would like to get a developer job
+job_prefs = responses_2017.groupby("JobPref").JobPref.count()
+job_prefs.plot.barh()
+plt.show()
+
+"""
+Load both the 2016 and 2017 sheets by name with a list and one call to read_excel().
+Load the 2016 sheet by its position (0) and 2017 by name. Note the sheet names in the result.
+Load all sheets in the Excel file without listing them all.
+"""
+# Load both the 2016 and 2017 sheets by name
+all_survey_data = pd.read_excel("fcc_survey.xlsx",
+                                sheet_name=['2016', '2017'])
+
+# View the data type of all_survey_data
+print(type(all_survey_data))
+
+# Load all sheets in the Excel file
+all_survey_data = pd.read_excel("fcc_survey.xlsx",
+                                sheet_name=[0,'2017'])
+
+# View the sheet names in all_survey_data
+print(all_survey_data.keys())
+
+# Load all sheets in the Excel file
+all_survey_data = pd.read_excel("fcc_survey.xlsx",
+                                sheet_name=None)
+
+# View the sheet names in all_survey_data
+print(all_survey_data.keys())
+
+"""
+Create an empty dataframe, all_responses.
+Set up a for loop to iterate through the values in the responses dictionary.
+Concatenate each dataframe to all_responses and reassign the result to the same variable name.
+"""
+# Create an empty dataframe
+all_responses = pd.DataFrame()
+
+# Set up for loop to iterate through values in responses
+for df in responses.values():
+  # Print the number of rows being added
+  print("Adding {} rows".format(df.shape[0]))
+  # Concatenate all_responses and df, assign result
+  all_responses = pd.concat([all_responses, df])
+
+# Graph employment statuses in sample
+counts = all_responses.groupby("EmploymentStatus").EmploymentStatus.count()
+counts.plot.barh()
+plt.show()
