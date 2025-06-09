@@ -209,3 +209,74 @@ for df in responses.values():
 counts = all_responses.groupby("EmploymentStatus").EmploymentStatus.count()
 counts.plot.barh()
 plt.show()
+
+"""
+Count NA values in each column of survey_data with isna() and sum(). Note which columns besides ID.x, if any, have zero NAs.
+"""
+# Load the data
+survey_data = pd.read_excel("fcc_survey_subset.xlsx")
+
+# Count NA values in each column
+print(survey_data.isna().sum())
+
+"""
+Set read_excel()'s dtype argument to load the HasDebt column as Boolean data.
+Supply the Boolean column name to the print statement to view financial burdens by group.
+"""
+# Set dtype to load appropriate column(s) as Boolean data
+survey_data = pd.read_excel("fcc_survey_subset.xlsx",
+                            dtype={'HasDebt':bool})
+
+# View financial burdens by Boolean group
+print(survey_data.groupby('HasDebt').sum())
+
+"""
+Load the Excel file, specifying "Yes" as a true value and "No" as a false value.
+"""
+# Load file with Yes as a True value and No as a False value
+survey_subset = pd.read_excel("fcc_survey_yn_data.xlsx",
+                              dtype={"HasDebt": bool,
+                              "AttendedBootCampYesNo": bool},
+                              true_values=['Yes'],
+                              false_values=['No'])
+
+# View the data
+print(survey_subset.head())
+
+"""
+Load fcc_survey.xlsx, making sure that the Part1StartTime column is parsed as datetime data.
+View the first few values of the survey_data.Part1StartTime to make sure it contains datetimes.
+"""
+# Load file, with Part1StartTime parsed as datetime data
+survey_data = pd.read_excel("fcc_survey.xlsx",
+                            parse_dates=["Part1StartTime"])
+
+# Print first few values of Part1StartTime
+print(survey_data.Part1StartTime.head())
+
+"""
+Create a dictionary, datetime_cols indicating that the new column Part2Start should consist of Part2StartDate and Part2StartTime.
+Load the survey response file, supplying the dictionary to the parse_dates argument to create a new Part2Start column.
+View summary statistics about the new Part2Start column with the describe() method.
+"""
+# Create dict of columns to combine into new datetime column
+datetime_cols = {"Part2Start": ['Part2StartDate', 'Part2StartTime']}
+
+
+# Load file, supplying the dict to parse_dates
+survey_data = pd.read_excel("fcc_survey_dts.xlsx",
+                            parse_dates=datetime_cols)
+
+# View summary statistics about Part2Start
+print(survey_data.Part2Start.describe())
+
+"""
+Parse Part2EndTime using pd.to_datetime(), the format keyword argument, and the format string you just identified. Assign the result back to 
+the Part2EndTime column.
+Print the head of Part2EndTime to confirm the column now contains datetime values.
+"""
+# Parse datetimes and assign result back to Part2EndTime
+survey_data["Part2EndTime"] = pd.to_datetime(survey_data["Part2EndTime"],
+                                   format="%m%d%Y %H:%M:%S")
+# Print first few values of Part2EndTime
+print(survey_data["Part2EndTime"].head())
