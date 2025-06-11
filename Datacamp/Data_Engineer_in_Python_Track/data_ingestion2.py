@@ -1,3 +1,5 @@
+import pandas as pd
+import matplotlib.pyplot as plt
 """
 Import the create_engine() function from sqlalchemy.
 Use create_engine() to make a database engine for data.db.
@@ -33,3 +35,123 @@ weather = pd.read_sql(query, engine)
 
 # View the first few rows of data
 print(weather.head())
+
+"""
+Create a database engine for data.db.
+Write a SQL query that SELECTs the date, tmax, and tmin columns from the weather table.
+Make a dataframe by passing the query and engine to read_sql() and assign the resulting dataframe to temperatures.
+"""
+# Create database engine for data.db
+engine = create_engine("sqlite:///data.db")
+
+# Write query to get date, tmax, and tmin from weather
+query = """
+SELECT date, 
+       tmax, 
+       tmin
+  FROM weather;
+"""
+
+# Make a dataframe by passing query and engine to read_sql()
+temperatures = pd.read_sql(query, engine)
+
+# View the resulting dataframe
+print(temperatures)
+
+"""
+Create a query that selects all columns of records in hpd311calls that have 'SAFETY' as their complaint_type.
+Use read_sql() to query the database and assign the result to the variable safety_calls.
+Run the last section of code to create a graph of safety call counts in each borough.
+"""
+# Create query to get hpd311calls records about safety
+query = """
+SELECT *
+FROM hpd311calls
+WHERE complaint_type = 'SAFETY';
+"""
+
+# Query the database and assign result to safety_calls
+safety_calls = pd.read_sql(query, engine)
+
+# Graph the number of safety calls by borough
+call_counts = safety_calls.groupby('borough').unique_key.count()
+call_counts.plot.barh()
+plt.show()
+
+"""
+Create a query that selects records in weather where tmax is less than or equal to 32 degrees OR snow is greater than or equal to 1 inch.
+Use read_sql() to query the database and assign the result to the variable wintry_days.
+View summary statistics with the describe() method to make sure all records in the dataframe meet the given criteria.
+"""
+# Create query for records with max temps <= 32 or snow >= 1
+query = """
+SELECT *
+  FROM weather
+  WHERE tmax <= 32
+    OR snow >= 1;
+"""
+
+# Query database and assign result to wintry_days
+wintry_days = pd.read_sql(query, engine)
+
+# View summary stats about the temperatures
+print(wintry_days.describe())
+
+"""
+Create a query that gets DISTINCT values for borough and complaint_type (in that order) from hpd311calls.
+Use read_sql() to load the results of the query to a dataframe, issues_and_boros.
+Print the dataframe to check if the assumption that all issues besides literature requests appear with boroughs listed.
+"""
+# Create query for unique combinations of borough and complaint_type
+query = """
+SELECT DISTINCT borough, 
+       complaint_type
+  FROM hpd311calls;
+"""
+
+# Load results of query to a dataframe
+issues_and_boros = pd.read_sql(query, engine)
+
+# Check assumption about issues and boroughs
+print(issues_and_boros)
+
+"""
+Create a SQL query that gets the complaint_type column and counts of all records from hpd311calls, grouped by complaint_type.
+Create a dataframe with read_sql() of call counts by issue, calls_by_issue.
+Run the last section of code to graph the number of calls for each housing issue.
+"""
+# Create query to get call counts by complaint_type
+query = """
+SELECT complaint_type, 
+     COUNT(*)
+  FROM hpd311calls
+  GROUP BY complaint_type;
+"""
+
+# Create dataframe of call counts by issue
+calls_by_issue = pd.read_sql(query, engine)
+
+# Graph the number of calls for each housing issue
+calls_by_issue.plot.barh(x="complaint_type")
+plt.show()
+
+"""
+Create a query to pass to read_sql() that will get months and the MAX value of tmax by monthfrom weather.
+Modify the query to also get the MIN tmin value for each month.
+Modify the query to also get the total precipitation (prcp) for each month.
+"""
+# Create query to get temperature and precipitation by month
+query = """
+SELECT month, 
+        MAX(tmax), 
+        MIN(tmin),
+        SUM(prcp)
+  FROM weather 
+ GROUP BY month;
+"""
+
+# Get dataframe of monthly weather stats
+weather_by_month = pd.read_sql(query, engine)
+
+# View weather stats by month
+print(weather_by_month)
