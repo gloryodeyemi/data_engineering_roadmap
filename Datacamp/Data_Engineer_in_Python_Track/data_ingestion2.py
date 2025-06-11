@@ -155,3 +155,66 @@ weather_by_month = pd.read_sql(query, engine)
 
 # View weather stats by month
 print(weather_by_month)
+
+"""
+Complete the query to join weather to hpd311calls by their date and created_date columns, respectively.
+Query the database and assign the resulting dataframe to calls_with_weather.
+Print the first few rows of calls_with_weather to confirm all columns were joined.
+"""
+# Query to join weather to call records by date columns
+query = """
+SELECT * 
+  FROM hpd311calls
+  JOIN weather 
+  ON hpd311calls.created_date = weather.date;
+"""
+
+# Create dataframe of joined tables
+calls_with_weather = pd.read_sql(query, engine)
+
+# View the dataframe to make sure all columns were joined
+print(calls_with_weather.head())
+
+"""
+Complete query to get the prcp column in weather and join weather to hpd311calls on their date and created_date columns, respectively.
+Use read_sql() to load the results of the query into the leak_calls dataframe.
+Modify query to get only rows that have 'WATER LEAK' as their complaint_type.
+"""
+# Query to get water leak calls and daily precipitation
+query = """
+SELECT hpd311calls.*, weather.prcp
+  FROM hpd311calls
+  JOIN weather
+    ON hpd311calls.created_date = weather.date
+  WHERE hpd311calls.complaint_type = 'WATER LEAK';"""
+
+# Load query results into the leak_calls dataframe
+leak_calls = pd.read_sql(query, engine)
+
+# View the dataframe
+print(leak_calls.head())
+
+"""
+Complete the query to get created_date and counts of records whose complaint_type is HEAT/HOT WATER from hpd311calls by date.
+Create a dataframe,df, containing the results of the query.
+Modify the query to join tmax and tmin from the weather table. (There is only one record per date in weather, so we do not need SQL's MAX 
+and MIN functions here.) Join the tables on created_date in hpd311calls and date in weather.
+"""
+# Modify query to join tmax and tmin from weather by date
+query = """
+SELECT hpd311calls.created_date, 
+	   COUNT(*), 
+       weather.tmax,
+       weather.tmin
+  FROM hpd311calls 
+       JOIN weather
+       ON hpd311calls.created_date = weather.date
+ WHERE hpd311calls.complaint_type = 'HEAT/HOT WATER' 
+ GROUP BY hpd311calls.created_date;
+ """
+
+# Query database and save results as df
+df = pd.read_sql(query, engine)
+
+# View first 5 records
+print(df.head())
