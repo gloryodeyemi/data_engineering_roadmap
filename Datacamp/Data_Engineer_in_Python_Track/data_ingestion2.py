@@ -218,3 +218,147 @@ df = pd.read_sql(query, engine)
 
 # View first 5 records
 print(df.head())
+
+"""
+Get a sense of the contents of dhs_daily_report.json, which are printed in the console.
+Load pandas as pd.
+Use read_json() to load dhs_daily_report.json to a dataframe, pop_in_shelters.
+View summary statistics about pop_in_shelters with the dataframe's describe() method.
+"""
+# Load pandas as pd
+import pandas as pd
+
+# Load the daily report to a dataframe
+pop_in_shelters = pd.read_json('dhs_daily_report.json')
+
+# View summary stats about pop_in_shelters
+print(pop_in_shelters.describe())
+
+"""
+Try loading dhs_report_reformatted.json without any keyword arguments.
+Load dhs_report_reformatted.json to a dataframe with orient specified.
+"""
+try:
+    # Load the JSON with orient specified
+    df = pd.read_json("dhs_report_reformatted.json",
+                      orient="split")
+    
+    # Plot total population in shelters over time
+    df["date_of_census"] = pd.to_datetime(df["date_of_census"])
+    df.plot(x="date_of_census", 
+            y="total_individuals_in_shelter")
+    plt.show()
+    
+except ValueError:
+    print("pandas could not parse the JSON.")
+
+"""
+Get data about New York City cafes from the Yelp API (api_url) with requests.get(). The necessary params and headers information has been provided.
+Extract the JSON data from the response with its json() method, and assign it to data.
+Load the cafe listings to the dataframe cafes with pandas's DataFrame() function. The listings are under the "businesses" key in data.
+Print the dataframe's dtypes to see what information you're getting.
+"""
+api_url = "https://api.yelp.com/v3/businesses/search"
+
+# Get data about NYC cafes from the Yelp API
+response = requests.get(base_url=api_url, 
+                headers=headers, 
+                params=params)
+
+# Extract JSON data from the response
+data = response.json()
+
+# Load data to a dataframe
+cafes = pd.DataFrame(data['businesses'])
+
+# View the data's dtypes
+print(cafes.dtypes)
+
+"""
+Create a dictionary, parameters, with the term and location parameters set to search for "cafe"s in "NYC".
+Query the Yelp API (api_url) with requests's get() function and the headers and params keyword arguments set. Save the result as response.
+Extract the JSON data from response with the appropriate method. Save the result as data.
+Load the "businesses" values in data to the dataframe cafes and print the head.
+"""
+# Create dictionary to query API for cafes in NYC
+parameters = {"term":"cafe",
+          	  "location":"NYC"}
+
+# Query the Yelp API with headers and params set
+response = requests.get(base_url=api_url,
+                headers=headers,
+                params=parameters)
+
+# Extract JSON data from response
+data = response.json()
+
+# Load "businesses" values to a dataframe and print head
+cafes = pd.DataFrame(data["businesses"])
+print(cafes.head())
+
+"""
+Create a dictionary, headers, that passes the formatted key string to the "Authorization" header value.
+Query the Yelp API (api_url) with get() and the necessary headers and parameters. Save the result as response.
+Extract the JSON data from response. Save the result as data.
+Load the "businesses" values in data to the dataframe cafes and print the names column.
+"""
+# Create dictionary that passes Authorization and key string
+headers = {"Authorization": "Bearer {}".format(api_key)}
+
+# Query the Yelp API with headers and params set
+response = requests.get(base_url=api_url,
+                headers=headers,
+                params=params)
+
+# Extract JSON data from response
+data = response.json()
+
+# Load "businesses" values to a dataframe and print names
+cafes = pd.DataFrame(data["businesses"])
+print(cafes.name)
+
+"""
+Load the json_normalize() function from pandas' io.json submodule.
+Isolate the JSON data from response and assign it to data.
+Use json_normalize() to flatten and load the businesses data to a dataframe, cafes. Set the sep argument to use underscores (_), rather than 
+periods.
+Show the data head.
+"""
+# Load json_normalize()
+from pandas.io.json import json_normalize
+
+# Isolate the JSON data from the API response
+data = response.json()
+
+# Flatten business data into a dataframe, replace separator
+cafes = json_normalize(data["businesses"],
+             sep='_')
+
+# View data
+print(cafes.head())
+
+"""
+Use json_normalize() to flatten records under the businesses key in data, setting underscores (_) as separators.
+Specify the record_path to the categories data.
+Set the meta keyword argument to get business name, alias, rating, and the attributes nested under coordinates: latitude and longitude.
+Add "biz_" as a meta_prefix to prevent duplicate column names.
+"""
+# Load other business attributes and set meta prefix
+flat_cafes = json_normalize(data["businesses"],
+                            sep="_",
+                    		record_path="categories",
+                    		meta=['name', 
+                                  'alias',  
+                                  'rating',
+                          		  ['coordinates', 'latitude'], 
+                          		  ['coordinates', 'longitude']],
+                    		meta_prefix='biz_')
+
+# View the data
+print(flat_cafes.head())
+
+"""
+Add an "offset" parameter to params so that the Yelp API call will get cafes 51-100.
+Concatenate the results of the API call to top_50_cafes, setting ignore_index so rows will be renumbered.
+Print the shape of the resulting dataframe, cafes, to confirm there are 100 records.
+"""
