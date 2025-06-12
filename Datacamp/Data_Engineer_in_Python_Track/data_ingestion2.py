@@ -362,3 +362,36 @@ Add an "offset" parameter to params so that the Yelp API call will get cafes 51-
 Concatenate the results of the API call to top_50_cafes, setting ignore_index so rows will be renumbered.
 Print the shape of the resulting dataframe, cafes, to confirm there are 100 records.
 """
+# Add an offset parameter to get cafes 51-100
+params = {"term": "cafe", 
+          "location": "NYC",
+          "sort_by": "rating", 
+          "limit": 50,
+          "offset":50}
+
+result = requests.get(api_url, headers=headers, params=params)
+next_50_cafes = json_normalize(result.json()["businesses"])
+
+# Concatenate the results, setting ignore_index to renumber rows
+cafes = pd.concat([top_50_cafes, next_50_cafes], ignore_index=True)
+
+# Print shape of cafes
+print(cafes.shape)
+
+"""
+Use the DataFrame method to merge cafes and crosswalk on location_zip_code and zipcode, respectively. Assign the result to cafes_with_pumas.
+Merge pop_data into cafes_with_pumas on their puma fields. Save the result as cafes_with_pop.
+"""
+# Merge crosswalk into cafes on their zip code fields
+cafes_with_pumas = cafes.merge(
+    crosswalk, 
+    left_on="location_zip_code",
+    right_on="zipcode")
+
+
+
+# Merge pop_data into cafes_with_pumas on puma field
+cafes_with_pop = cafes_with_pumas.merge(pop_data, on="puma")
+
+# View the data
+print(cafes_with_pop.head())
