@@ -39,6 +39,19 @@ JOIN dim_customers dc
 SELECT 
     dp.category,
     ROUND(
+        SUM(IFNULL(f.reorder_flag, 0)) * 1.0 / COUNT(*), 
+        2
+    ) AS avg_reorder_frequency
+FROM fct_orders f
+JOIN dim_products dp 
+    ON f.product_id = dp.product_id
+WHERE f.order_date BETWEEN '2024-10-01' AND '2024-12-31'
+GROUP BY dp.category;
+
+-- Solution 2
+SELECT 
+    dp.category,
+    ROUND(
         SUM(CASE WHEN f.reorder_flag = 1 THEN 1 ELSE 0 END) * 1.0 /
         COUNT(f.order_id), 
         2
