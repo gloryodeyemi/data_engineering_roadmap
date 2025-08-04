@@ -9,6 +9,7 @@ personalized marketing strategies.
 import pandas as pd
 
 fct_guest_spending = pd.DataFrame()
+
 """
 Question 1 of 3
 ---------------
@@ -47,3 +48,70 @@ avg_spend = pd.merge(
 # Fill missing values with 0.0
 avg_spend['avg_spending'] = avg_spend['avg_spending'].fillna(0.0)
 print(avg_spend)
+
+"""
+Question 2:
+-----------
+For guests who visited our parks more than once in August 2024, what is the difference in spending between their first and their last visit? 
+This investigation, using sequential analysis, will reveal any shifts in guest spending behavior over multiple visits.
+"""
+# Get data for August 2024 visits alone
+fct_guest_spending['visit_date'] = pd.to_datetime(fct_guest_spending['visit_date'])
+august_24_visits = fct_guest_spending[
+    (fct_guest_spending['visit_date'].dt.month == 8) &
+    (fct_guest_spending['visit_date'].dt.year == 2024)
+]
+
+# Identify guests with multiple visits
+august_24_visits['visit_count'] = august_24_visits.groupby('guest_id')['visit_date'].transform('count')
+multiple_visits = august_24_visits[august_24_visits['visit_count'] > 1]
+
+# Determine the first and last visit and spending for each guest
+first_last_spend = (
+    multiple_visits.sort_values('visit_date')
+    .groupby('guest_id').agg(
+        first_spending=('amount_spent', 'first'),
+        last_spending=('amount_spent', 'last')
+    )
+    .reset_index()
+)
+
+# Calculate the spending difference between the first and last visit
+first_last_spend['spending_difference'] = first_last_spend['last_spending'] - first_last_spend['first_spending']
+print(first_last_spend[['guest_id','spending_difference']])
+
+"""
+Question 3:
+-----------
+In September 2024, how can guests be categorized into distinct spending segments such as Low, Medium, and High based on their total spending? 
+Use the following thresholds for categorization:
+
+Low: Includes values from $0 up to, but not including, $50.
+Medium: Includes values from $50 up to, but not including, $100.
+High: Includes values from $100 and above.
+Exclude guests who did not make any purchases in the period.
+"""
+# Get 'guests' visits for September 2024 alone
+fct_guest_spending['visit_date'] = pd.to_datetime(fct_guest_spending['visit_date'])
+sept_24_visits = fct_guest_spending[
+    (fct_guest_spending['visit_date'].dt.month == 9) &
+    (fct_guest_spending['visit_date'].dt.year == 2024)
+]
+
+# Group guests to get their total spend and exclude guests without purchase
+guest_spend = sept_24_visits.groupby('guest_id', as_index=False)['amount_spent'].sum()
+guest_spend = guest_spend[guest_spend['amount_spent'] > 0]
+
+
+# Categorize guest based on their total spend
+def categorize_spending(amount):
+    if amount < 50:
+        return 'Low'
+    elif amount < 100:
+        return 'Medium'
+    else:
+        return 'High'
+
+
+guest_spend['spending_segment'] = guest_spend['amount_spent'].apply(categorize_spending)
+print(guest_spend)
