@@ -5,6 +5,10 @@ You are a Product Analyst on the WhatsApp team investigating group messaging dyn
 used and their messaging patterns. You'll leverage data to uncover insights about group participation and communication behaviors.
 """
 
+import pandas as pd
+
+dim_groups = pd.DataFrame()
+
 # Question 1 of 3
 # What is the maximum number of participants among WhatsApp groups that were created in October 2024? This metric will help us understand the 
 # largest group size available.
