@@ -5,6 +5,11 @@ You are a Product Analyst on the Amazon Sponsored Advertising team investigating
 Your team wants to understand CTR variations to optimize targeted advertising strategies.
 """
 
+import pandas as pd
+
+fct_ad_performance = pd.DataFrame()
+dim_product = pd.DataFrame()
+
 """
 Question 1 of 3
 ---------------
